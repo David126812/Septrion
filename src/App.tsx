@@ -6,6 +6,7 @@ import AuthGuard from '@/components/auth/AuthGuard'
 import Auth from '@/pages/Auth'
 import Onboarding from '@/pages/Onboarding'
 import PrivacyPolicy from '@/pages/PrivacyPolicy'
+import SignalerIncident from '@/pages/SignalerIncident'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,7 +35,7 @@ function App() {
           <Route path="/dossiers" element={<AuthGuard><Placeholder name="Dossiers" /></AuthGuard>} />
           <Route path="/dossiers/:id" element={<AuthGuard><Placeholder name="Dossier Detail" /></AuthGuard>} />
           <Route path="/signalements" element={<AuthGuard><Placeholder name="Signalements" /></AuthGuard>} />
-          <Route path="/signaler-incident" element={<AuthGuard><Placeholder name="Signaler Incident" /></AuthGuard>} />
+          <Route path="/signaler-incident" element={<AuthGuard><SignalerIncident /></AuthGuard>} />
           <Route path="/assistant" element={<AuthGuard><Placeholder name="Assistant IA" /></AuthGuard>} />
           <Route path="/settings" element={<AuthGuard><Placeholder name="Settings" /></AuthGuard>} />
 
