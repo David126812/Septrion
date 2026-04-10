@@ -13,6 +13,7 @@ import { toast } from 'sonner'
 import { formatDistanceToNow } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import BottomNav from '@/components/layout/BottomNav'
+import { trackSignalementQualified } from '@/lib/posthog'
 
 interface Signalement {
   id: string
@@ -117,6 +118,7 @@ const Signalements = () => {
         .update({ status: 'qualifie', dossier_id: dossier.id })
         .eq('id', selected.id)
 
+      trackSignalementQualified(dossier.id)
       setSignalements((prev) => prev.filter((s) => s.id !== selected.id))
       setSelected(null)
       toast.success('Dossier créé avec succès.')

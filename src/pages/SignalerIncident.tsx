@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ArrowLeft, Camera, Sparkles, Loader2, CheckCircle2, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { trackDocumentUploaded } from '@/lib/posthog'
 import { toast } from 'sonner'
 
 const LOCATIONS = [
@@ -113,6 +114,7 @@ const SignalerIncident = () => {
             .from('copro-documents')
             .getPublicUrl(filePath)
           documentUrl = urlData.publicUrl
+          trackDocumentUploaded(file.type)
         }
       }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
+import { identifyUser } from '@/lib/posthog'
 import type { User, Session } from '@supabase/supabase-js'
 
 interface Profile {
@@ -65,6 +66,7 @@ export function useAuth() {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
         const { profile, copro } = await fetchProfile(session.user.id)
+        if (profile) identifyUser(session.user.id, copro?.name)
         setState({ user: session.user, session, profile, copro, loading: false })
       } else {
         setState(prev => ({ ...prev, loading: false }))

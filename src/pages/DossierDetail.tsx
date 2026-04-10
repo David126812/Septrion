@@ -18,6 +18,7 @@ import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import BottomNav from '@/components/layout/BottomNav'
+import { trackDossierViewed } from '@/lib/posthog'
 
 interface TimelineEvent {
   label: string
@@ -97,6 +98,7 @@ const DossierDetail = () => {
         .eq('id', id)
         .single()
       setDossier(data)
+      if (data) trackDossierViewed(data.id)
 
       // Fetch attached documents from signalements
       const { data: sigs } = await supabase
