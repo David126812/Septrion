@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,6 +11,18 @@ import { toast } from 'sonner'
 
 const Auth = () => {
   const navigate = useNavigate()
+  const { user, profile, loading: authLoading } = useAuth()
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (authLoading) return
+    if (user && profile?.onboarding_completed) {
+      navigate('/dashboard', { replace: true })
+    } else if (user) {
+      navigate('/onboarding', { replace: true })
+    }
+  }, [user, profile, authLoading, navigate])
+
   const [isLogin, setIsLogin] = useState(true)
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
@@ -37,10 +50,8 @@ const Auth = () => {
       toast.error(error.message === 'Invalid login credentials'
         ? 'Identifiants incorrects. Vérifiez votre numéro et mot de passe.'
         : error.message)
-      return
     }
-
-    navigate('/dashboard', { replace: true })
+    // onAuthStateChange + useEffect handles redirect
   }
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -66,8 +77,7 @@ const Auth = () => {
       }
       return
     }
-
-    navigate('/onboarding', { replace: true })
+    // onAuthStateChange + useEffect handles redirect
   }
 
   return (

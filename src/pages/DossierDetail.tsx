@@ -194,8 +194,12 @@ const DossierDetail = () => {
 
   if (!dossier) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
         <p className="text-muted-foreground">Dossier introuvable.</p>
+        <Button variant="outline" onClick={() => navigate('/dossiers')}>
+          <ArrowLeft className="size-4 mr-2" />
+          Retour aux dossiers
+        </Button>
       </div>
     )
   }

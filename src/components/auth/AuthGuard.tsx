@@ -19,7 +19,8 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/auth" replace />
   }
 
-  if (profile && !profile.onboarding_completed) {
+  // No profile yet OR onboarding not completed → force onboarding
+  if (!profile || !profile.onboarding_completed) {
     return <Navigate to="/onboarding" replace />
   }
 

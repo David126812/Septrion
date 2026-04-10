@@ -42,7 +42,10 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!profile?.copro_id) return
+    if (!profile?.copro_id) {
+      setLoading(false)
+      return
+    }
 
     const fetchData = async () => {
       const [dossiersRes, sigCountRes] = await Promise.all([

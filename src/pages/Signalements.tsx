@@ -50,20 +50,21 @@ const Signalements = () => {
   const [showAttach, setShowAttach] = useState(false)
   const [actionLoading, setActionLoading] = useState(false)
 
-  const fetchSignalements = async () => {
-    if (!profile?.copro_id) return
-    const { data } = await supabase
+  useEffect(() => {
+    if (!profile?.copro_id) {
+      setLoading(false)
+      return
+    }
+    supabase
       .from('signalements')
       .select('*')
       .eq('copro_id', profile.copro_id)
       .eq('status', 'nouveau')
       .order('created_at', { ascending: false })
-    setSignalements(data || [])
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    fetchSignalements()
+      .then(({ data }) => {
+        setSignalements(data || [])
+        setLoading(false)
+      })
   }, [profile?.copro_id])
 
   // Realtime subscription

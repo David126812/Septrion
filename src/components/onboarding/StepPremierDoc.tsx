@@ -22,7 +22,10 @@ const StepPremierDoc = () => {
   }
 
   const handleUpload = async (file: File) => {
-    if (!user || !profile?.copro_id) return
+    if (!user || !profile?.copro_id) {
+      toast.error('Profil incomplet. Revenez à l\'étape précédente.')
+      return
+    }
 
     if (file.size > 10 * 1024 * 1024) {
       toast.error('Le fichier dépasse la limite de 10 MB.')
@@ -59,13 +62,10 @@ const StepPremierDoc = () => {
         },
       })
 
-      if (error || !data?.success) {
-        throw new Error('Analysis failed')
-      }
+      if (error || !data?.success) throw new Error('Analysis failed')
 
       const analysis = data.data
 
-      // Create signalement
       await supabase.from('signalements').insert({
         copro_id: profile.copro_id,
         name: analysis.name,
@@ -80,23 +80,20 @@ const StepPremierDoc = () => {
 
       setState('success')
       await completeOnboarding()
-
-      setTimeout(() => {
-        navigate('/signalements', { replace: true })
-      }, 1500)
+      setTimeout(() => navigate('/signalements', { replace: true }), 1500)
     } catch {
-      toast.error('L\'analyse a échoué. Le signalement a été créé sans analyse IA.')
-      // Create signalement without AI analysis
+      // Fallback: create signalement without IA
       await supabase.from('signalements').insert({
         copro_id: profile.copro_id,
-        name: file.name,
+        name: file.name.replace(/\.[^.]+$/, ''),
         urgency: 'normal',
-        summary: '',
+        summary: 'Document uploadé — analyse IA non disponible.',
         document_url: urlData.publicUrl,
         status: 'nouveau',
       })
+      setState('success')
       await completeOnboarding()
-      navigate('/signalements', { replace: true })
+      setTimeout(() => navigate('/signalements', { replace: true }), 1500)
     }
   }
 
@@ -105,11 +102,14 @@ const StepPremierDoc = () => {
   }
 
   const handleExampleDoc = async () => {
-    if (!user || !profile?.copro_id) return
+    if (!user || !profile?.copro_id) {
+      toast.error('Profil incomplet. Revenez à l\'étape précédente.')
+      return
+    }
 
     setState('analyzing')
 
-    // Simulate example document analysis
+    // Try Edge Function first, fallback to local example
     try {
       const { data, error } = await supabase.functions.invoke('analyze-document', {
         body: {
@@ -131,18 +131,22 @@ const StepPremierDoc = () => {
         raw_analysis: analysis,
         status: 'nouveau',
       })
-
-      setState('success')
-      await completeOnboarding()
-
-      setTimeout(() => {
-        navigate('/signalements', { replace: true })
-      }, 1500)
     } catch {
-      toast.error('L\'analyse exemple a échoué.')
-      await completeOnboarding()
-      navigate('/signalements', { replace: true })
+      // Fallback: create example signalement locally
+      await supabase.from('signalements').insert({
+        copro_id: profile.copro_id,
+        name: 'Infiltrations toiture Bâtiment B',
+        urgency: 'urgent',
+        location: 'Toiture',
+        summary: 'Des infiltrations ont été signalées par Mme Dupont (apt 302). Devis de réfection demandé au syndic. Ascenseur bâtiment C en panne depuis le 2 mars, intervention prévue semaine prochaine.',
+        next_step: 'Relancer le syndic pour le devis de réfection toiture',
+        status: 'nouveau',
+      })
     }
+
+    setState('success')
+    await completeOnboarding()
+    setTimeout(() => navigate('/signalements', { replace: true }), 1500)
   }
 
   const handleExplore = async () => {

@@ -43,7 +43,10 @@ const DossiersList = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!profile?.copro_id) return
+    if (!profile?.copro_id) {
+      setLoading(false)
+      return
+    }
     supabase
       .from('dossiers')
       .select('id, name, status, urgency, updated_at')

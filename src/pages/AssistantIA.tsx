@@ -152,7 +152,8 @@ const AssistantIA = () => {
     scrollToBottom()
   }, [messages, isTyping, scrollToBottom])
 
-  const lastAssistantIdx = messages.length - 1 - [...messages].reverse().findIndex((m) => m.role === 'assistant')
+  const reverseIdx = [...messages].reverse().findIndex((m) => m.role === 'assistant')
+  const lastAssistantIdx = reverseIdx === -1 ? -1 : messages.length - 1 - reverseIdx
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
