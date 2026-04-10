@@ -1,0 +1,404 @@
+# Sprint Status — Septrion MVP
+# Generated: 2026-04-10
+# Last Updated: 2026-04-10
+# Project: Septrion
+# Project Key: SEPT
+# Tracking: BMAD sprint-status
+# Story Location: docs/stories/
+
+epics:
+  - id: epic-1
+    name: "Infrastructure & Authentification"
+    status: partial
+    stories:
+      - id: story-1-1
+        name: "Deploiement Vercel & PWA"
+        status: done
+        commit: 2167d58
+        notes: "Vercel config SPA + manifest.json + SW registration OK"
+
+      - id: story-1-2
+        name: "Inscription par numero + mot de passe"
+        status: partial
+        commit: 2167d58
+        notes: "ECART: Implementation utilise email+mdp au lieu de telephone+mdp. Le PRD, epics et UX spec disent tous telephone."
+        gaps:
+          - "Auth par email au lieu de telephone (FR1)"
+          - "Profile insert minimal (id + email seulement, pas de whatsapp_phone)"
+
+      - id: story-1-3
+        name: "Connexion & persistance de session"
+        status: done
+        commit: 2167d58
+        notes: "Session Supabase Auth persistante, AuthGuard sur routes protegees."
+
+      - id: story-1-4
+        name: "RLS par copropriete"
+        status: partial
+        commit: 2167d58
+        notes: "Policies RLS definies dans migration 006 mais referencent des tables non creees (migration 001 manquante)."
+        gaps:
+          - "Migration 001 manquante — tables dossiers, signalements, published_updates jamais creees"
+
+      - id: story-1-5
+        name: "Politique de confidentialite"
+        status: done
+        commit: 2167d58
+        notes: "Page PrivacyPolicy.tsx accessible sur /privacy."
+
+    retrospective:
+      done:
+        - "Vercel deploy fonctionnel"
+        - "PWA installable"
+        - "Auth + session + guard en place"
+        - "RLS policies definies"
+      gaps:
+        - "Auth par email au lieu de telephone — ecart majeur avec specs"
+        - "Migration 001 manquante — tables core non creees dans les migrations"
+        - "Env vars hardcodees dans supabase.ts"
+
+  - id: epic-2
+    name: "Onboarding & Configuration"
+    status: partial
+    stories:
+      - id: story-2-1
+        name: "Stepper & explication visuelle"
+        status: done
+        commit: bb92f6a
+        notes: "Stepper 5 etapes avec progression visuelle."
+
+      - id: story-2-2
+        name: "Inscription + profil fusionnes & opt-in"
+        status: partial
+        commit: bb92f6a
+        notes: "Profil collecte prenom, copro, whatsapp_phone, notification_consent. Mais l'inscription est dans Auth.tsx (email), pas fusionnee ici."
+        gaps:
+          - "L'inscription n'est pas fusionnee dans le stepper step 2 comme prevu par le UX spec"
+
+      - id: story-2-3
+        name: "Instructions d'installation PWA"
+        status: done
+        commit: bb92f6a
+        notes: "Instructions iOS + Android affichees."
+
+      - id: story-2-4
+        name: "Explication WhatsApp"
+        status: done
+        commit: bb92f6a
+        notes: "Contenu explicatif + numero + bouton copier."
+
+      - id: story-2-5
+        name: "Premier document ou exploration"
+        status: partial
+        commit: bb92f6a
+        notes: "3 options presentes (upload, exemple, explorer). Seed data chargees."
+        gaps:
+          - "Flag onboarding_completed non enregistre dans profiles"
+          - "Pas de redirect conditionnel post-login (dashboard vs onboarding)"
+
+    retrospective:
+      done:
+        - "Stepper 5 etapes complet et fonctionnel"
+        - "Profil collecte correctement"
+        - "Seed data chargees au step 5"
+      gaps:
+        - "onboarding_completed flag absent"
+        - "Pas de guard conditionnel dans AuthGuard"
+
+  - id: epic-3
+    name: "Ingestion & Analyse IA"
+    status: done
+    stories:
+      - id: story-3-1
+        name: "Pipeline IA partage"
+        status: done
+        commit: 0006491
+        notes: "analyzeMessage.ts dans _shared/ — Claude Sonnet, PDF/image/texte, fallback keywords."
+
+      - id: story-3-2
+        name: "Webhook WhatsApp -> signalement"
+        status: done
+        commit: 0006491
+        notes: "whatsapp-webhook Edge Function complete avec matching phone, upload storage, analyse IA."
+
+      - id: story-3-3
+        name: "Creation manuelle in-app"
+        status: done
+        commit: 0006491
+        notes: "SignalerIncident.tsx avec titre, description, localisation."
+
+      - id: story-3-4
+        name: "Upload fichier comme piece jointe (sans IA)"
+        status: done
+        commit: 0006491
+        notes: "Upload fichier avec limite 10MB, stockage Supabase Storage."
+
+      - id: story-3-5
+        name: "Auto-completion IA sur fichier attache"
+        status: done
+        commit: 0006491
+        notes: "Bouton 'Analyser avec l'IA' appelle analyze-document, pre-remplit les champs."
+
+      - id: story-3-6
+        name: "Mise a jour temps reel des signalements"
+        status: done
+        commit: 0006491
+        notes: "Supabase Realtime subscription dans Signalements.tsx."
+
+    retrospective:
+      done:
+        - "Pipeline IA complet et fonctionnel"
+        - "3 modes d'ingestion (WhatsApp, manuel, upload+IA)"
+        - "Limite 10MB respectee"
+        - "Realtime OK"
+      gaps:
+        - "Pas de selecteur d'urgence (conforme au UX spec qui dit 'normal par defaut')"
+
+  - id: epic-4
+    name: "Triage & Gestion des Dossiers"
+    status: partial
+    stories:
+      - id: story-4-1
+        name: "Inbox signalements"
+        status: done
+        commit: 5a74857
+        notes: "Liste des signalements nouveaux, tries par date."
+
+      - id: story-4-2
+        name: "Qualifier un signalement -> creer un dossier"
+        status: done
+        commit: 5a74857
+        notes: "Bouton 'Creer un dossier' + 'Rejeter' fonctionnels."
+
+      - id: story-4-3
+        name: "Qualifier un signalement -> rattacher a un dossier"
+        status: done
+        commit: 5a74857
+        notes: "Selection dans liste dossiers existants, rattachement OK."
+
+      - id: story-4-4
+        name: "Liste des dossiers"
+        status: done
+        commit: 5a74857
+        notes: "DossiersList.tsx avec statut, urgence, date."
+
+      - id: story-4-5
+        name: "Detail d'un dossier"
+        status: done
+        commit: 5a74857
+        notes: "Resume IA, urgence, next_step, timeline, documents."
+
+      - id: story-4-6
+        name: "Transitions de statut"
+        status: done
+        commit: 5a74857
+        notes: "en_cours <-> bloque <-> termine fonctionnel."
+
+      - id: story-4-7
+        name: "Resume IA dynamique"
+        status: missing
+        notes: "regenerateDossierSummary.ts existe dans _shared/ mais n'est JAMAIS appele depuis le code de rattachement (story 4.3). Le resume ne se regenere pas."
+        gaps:
+          - "regenerateDossierSummary non invoque lors du rattachement"
+
+    retrospective:
+      done:
+        - "Inbox, qualification, rattachement, rejet OK"
+        - "Liste et detail dossiers complets"
+        - "Transitions de statut fonctionnelles"
+      gaps:
+        - "Resume IA dynamique non branche (story 4.7)"
+
+  - id: epic-5
+    name: "Notifications & Communication"
+    status: partial
+    stories:
+      - id: story-5-1
+        name: "Helpers d'envoi WhatsApp + email"
+        status: done
+        commit: a5a3107
+        notes: "sendWhatsApp.ts + sendEmail.ts dans _shared/."
+
+      - id: story-5-2
+        name: "Notification automatique — nouveau signalement"
+        status: done
+        commit: a5a3107
+        notes: "send-notification Edge Function fonctionnelle."
+
+      - id: story-5-3
+        name: "Partage cosmetique depuis un dossier"
+        status: missing
+        notes: "Aucun bouton 'Partager' dans DossierDetail.tsx. La feature est absente."
+        gaps:
+          - "UI de partage (choix residents/CS, message pre-rempli, loop solo) non implementee"
+
+    retrospective:
+      done:
+        - "Helpers notification complets"
+        - "Notification auto sur nouveau signalement OK"
+      gaps:
+        - "Partage cosmetique absent de DossierDetail"
+
+  - id: epic-6
+    name: "Dashboard & Digest"
+    status: done
+    stories:
+      - id: story-6-1
+        name: "Dashboard avec remontee automatique"
+        status: done
+        commit: a5a3107
+        notes: "Greeting, carte assistant, quick actions, dossiers bloques, activite recente."
+
+      - id: story-6-2
+        name: "Digest — resume IA via Supabase"
+        status: done
+        commit: a5a3107
+        notes: "send-digest Edge Function complete. Declenchement manuel (pas de cron)."
+
+    retrospective:
+      done:
+        - "Dashboard complet avec toutes les sections"
+        - "Digest fonctionnel en mode manuel"
+      gaps: []
+
+  - id: epic-7
+    name: "Analytics"
+    status: missing
+    stories:
+      - id: story-7-1
+        name: "Initialisation PostHog & identification"
+        status: missing
+        notes: "Package posthog-js installe mais ZERO code d'initialisation. Ni posthog.init(), ni posthog.identify(), ni posthog.group()."
+        gaps:
+          - "posthog.init() absent de main.tsx"
+          - "posthog.identify() absent post-auth"
+          - "posthog.group('copro') absent"
+          - "src/lib/posthog.ts non cree"
+
+      - id: story-7-2
+        name: "Events custom"
+        status: missing
+        notes: "Zero event custom implemente."
+        gaps:
+          - "signalement_qualified non tracke"
+          - "dossier_viewed non tracke"
+          - "notification_sent non tracke"
+          - "document_uploaded non tracke"
+          - "digest_clicked non tracke"
+
+    retrospective:
+      done: []
+      gaps:
+        - "Epic entierement non implemente (0%)"
+
+  - id: epic-8
+    name: "Seed & Administration"
+    status: partial
+    stories:
+      - id: story-8-1
+        name: "Pre-chargement de dossiers seed"
+        status: partial
+        commit: bb92f6a
+        notes: "Seed data presentes mais hardcodees dans StepPremierDoc.tsx au lieu d'un script SQL."
+        gaps:
+          - "Seed via composant React au lieu de script SQL/migration"
+          - "Pas de badge 'Exemple' sur les dossiers seed dans la liste dossiers"
+
+    retrospective:
+      done:
+        - "Dossiers seed realistes (ascenseur, ravalement, eclairage)"
+        - "Charges au moment de l'onboarding"
+      gaps:
+        - "Mecanisme de seed non conforme (composant vs SQL)"
+
+  - id: epic-9
+    name: "Assistant IA (Chat & Vocal)"
+    status: done
+    stories:
+      - id: story-9-1
+        name: "Edge Function assistant-query (prompt RAG)"
+        status: done
+        commit: a5a3107
+        notes: "RAG avec contexte dossiers + signalements. Retourne response, matched_dossiers, suggested_actions."
+
+      - id: story-9-2
+        name: "Interface chat texte"
+        status: done
+        commit: a5a3107
+        notes: "Bulles user/agent, typing indicator, historique en memoire."
+
+      - id: story-9-3
+        name: "Suggestions, chips & actions contextuelles"
+        status: done
+        commit: a5a3107
+        notes: "3 suggestions initiales, boutons d'action contextuels apres reponse."
+
+      - id: story-9-4
+        name: "Agent vocal"
+        status: done
+        commit: a5a3107
+        notes: "Web Speech API (fr-FR) au lieu de Whisper. Fonctionnel."
+
+      - id: story-9-5
+        name: "Animations et transitions"
+        status: done
+        commit: a5a3107
+        notes: "Fade-in, slide-in, bounce dots, transitions fluides."
+
+    retrospective:
+      done:
+        - "Chat + vocal + suggestions + actions complets"
+        - "Animations conformes au UX spec"
+      gaps:
+        - "Utilise Web Speech API au lieu de Whisper (ecart mineur, fonctionnel)"
+
+# Stories manquantes — non couvertes par les epics originaux
+missing_stories:
+  - id: story-x-1
+    name: "Bottom Navigation globale"
+    source: "UX Spec — Navigation globale"
+    status: missing
+    priority: critical
+    description: "Composant bottom nav persistant avec 5 onglets : Dashboard, Dossiers, '+' central, Signalements (badge), Assistant IA. Absente de tous les epics."
+
+  - id: story-x-2
+    name: "Page Settings"
+    source: "UX Spec — ecran 9"
+    status: missing
+    priority: high
+    description: "Route /settings avec profil (lecture seule), nombre de lots (+/-), toggle notifications, lien privacy, mention IA, deconnexion."
+
+  - id: story-x-3
+    name: "Auth guard conditionnel onboarding"
+    source: "UX Spec — Auth guard"
+    status: missing
+    priority: high
+    description: "AuthGuard verifie onboarding_completed. Si false -> /onboarding. Si true -> /dashboard."
+
+  - id: story-x-4
+    name: "Migration 001 — tables core"
+    source: "Architecture — Modele de Donnees"
+    status: missing
+    priority: critical
+    description: "CREATE TABLE pour dossiers, signalements, published_updates avec schema complet. Pre-requis pour toutes les autres migrations."
+
+# Summary
+summary:
+  total_stories: 44
+  done: 29
+  partial: 7
+  missing: 8
+  completion_percentage: 66
+  critical_blockers:
+    - "Migration 001 — tables core non creees"
+    - "Bottom Navigation — composant UX central absent"
+    - "PostHog — Epic 7 entierement non implemente"
+  next_actions:
+    - "Creer migration 001"
+    - "Implementer bottom navigation"
+    - "Integrer PostHog"
+    - "Creer page Settings"
+    - "Corriger auth telephone vs email"
+    - "Ajouter onboarding_completed flag + guard"
+    - "Brancher regenerateDossierSummary"
+    - "Ajouter partage cosmetique dans DossierDetail"
