@@ -204,8 +204,9 @@ export default MaPage;
 
 ### Auth
 
-- Methode : email + mot de passe (implementation actuelle)
-- Note : le PRD specifie telephone + mot de passe. A migrer si necessaire.
+- **Decision (2026-04-10) :** email + mot de passe pour la creation de compte et la connexion
+- Le numero WhatsApp est collecte a l'onboarding (step profil, Story 2.2) et stocke dans `profiles.whatsapp_phone`
+- Le matching WhatsApp webhook se fait via `sender_phone → profiles.whatsapp_phone → copro_id`
 - Session persistante via JWT Supabase
 - `useAuth()` hook pour acceder au user/session dans les composants
 

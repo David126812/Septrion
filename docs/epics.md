@@ -22,9 +22,9 @@ Ce document décompose les exigences du PRD et de l'Architecture en epics et sto
 ### Functional Requirements
 
 **Authentification (4)**
-- FR1 : Le nouvel utilisateur peut créer un compte avec son numéro de téléphone et un mot de passe
-- FR2 : Le système peut lier le numéro de téléphone au compte WhatsApp pour le matching des messages entrants
-- FR3 : Un utilisateur authentifié peut se connecter avec son numéro + mot de passe
+- FR1 : Le nouvel utilisateur peut créer un compte avec son email et un mot de passe
+- FR2 : Le système peut lier le numéro WhatsApp (collecté à l'onboarding) au profil pour le matching des messages entrants
+- FR3 : Un utilisateur authentifié peut se connecter avec son email + mot de passe
 - FR4 : Un utilisateur authentifié peut rester connecté entre les sessions (persistance de session)
 
 **Onboarding (6)**
@@ -107,7 +107,7 @@ Ce document décompose les exigences du PRD et de l'Architecture en epics et sto
 
 ### Additional Requirements (Architecture)
 
-- AR1 : Supabase Auth avec numéro + mot de passe. Matching sender_phone → profiles.whatsapp_phone → copro_id
+- AR1 : Supabase Auth avec email + mot de passe. Le numéro WhatsApp est collecté à l'onboarding (step profil). Matching sender_phone → profiles.whatsapp_phone → copro_id
 - AR2 : Nouvelle table `coproprietes` (id, name, lots_count)
 - AR3 : Nouvelle table `profiles` (id FK auth.users, first_name, copro_id FK, whatsapp_phone, email, notification_consent)
 - AR4 : Ajout `copro_id` + `location` sur les tables existantes (dossiers, signalements, published_updates)
@@ -126,9 +126,9 @@ Pas de document UX — les spécifications UX seront définies ultérieurement.
 
 ### FR Coverage Map
 
-- FR1 → Epic 1 (Story 1.2) — Inscription numéro + mdp
-- FR2 → Epic 1 (Story 1.2) — Liaison numéro/WhatsApp
-- FR3 → Epic 1 (Story 1.3) — Connexion
+- FR1 → Epic 1 (Story 1.2) — Inscription email + mdp
+- FR2 → Epic 1 (Story 1.2) + Epic 2 (Story 2.2) — Liaison WhatsApp (numéro collecté à l'onboarding)
+- FR3 → Epic 1 (Story 1.3) — Connexion email + mdp
 - FR4 → Epic 1 (Story 1.3) — Persistance session
 - FR5 → Epic 2 (Story 2.1) — Stepper 5 étapes
 - FR6 → Epic 2 (Story 2.1) — Explication visuelle
@@ -176,8 +176,15 @@ Pas de document UX — les spécifications UX seront définies ultérieurement.
 - FR47 → Epic 9 (Story 9.1) — Edge Function assistant-query (RAG)
 - FR48 → Epic 9 (Story 9.3) — Actions contextuelles
 - FR49 → Epic 9 (Story 9.3) — Suggestions et chips
-- FR50 → Epic 2 (Story 2.2) / Settings — Nombre de lots
+- FR50 → Epic 2 (Story 2.2) / Epic X (Story X.2) — Nombre de lots (Settings)
 - FR44 → Epic 2 (Story 2.2) — Opt-in notifications
+
+### Structural Requirements (UX Spec / Architecture — non couverts par FRs)
+
+- SR1 → Epic X (Story X.1) — Bottom Navigation globale (5 onglets, persistante)
+- SR2 → Epic X (Story X.2) — Page Settings (profil, lots, notifications, privacy, déconnexion)
+- SR3 → Epic X (Story X.3) — Auth guard conditionnel onboarding (redirect si non complété)
+- SR4 → Epic X (Story X.4) — Migration 001 tables core (dossiers, signalements, published_updates)
 
 ## Epic List
 
@@ -217,6 +224,10 @@ L'administrateur peut pré-charger des dossiers dummy pour que les testeurs dém
 L'utilisateur peut interroger l'assistant IA pour retrouver rapidement une information sur ses dossiers, par texte ou par voix.
 **FRs couvertes:** FR45, FR46, FR47, FR48, FR49
 
+### Epic X: Composants Structurants
+Composants transversaux identifiés par le UX spec et l'architecture mais non couverts par les epics initiaux. Requis pour une app fonctionnelle.
+**SRs couvertes:** SR1, SR2, SR3, SR4 — **FR50** (Settings/lots)
+
 ## Epic 1: Infrastructure & Authentification
 
 L'utilisateur peut accéder à l'app, créer un compte et se connecter.
@@ -236,26 +247,26 @@ So that **j'ai un accès rapide comme une app native**.
 **And** le Service Worker est enregistré pour l'installabilité
 **And** le `vercel.json` redirige toutes les routes vers `index.html` (SPA)
 
-### Story 1.2: Inscription par numéro + mot de passe
+### Story 1.2: Inscription par email + mot de passe
 
 As a **nouvel utilisateur**,
-I want **créer un compte avec mon numéro de téléphone et un mot de passe**,
+I want **créer un compte avec mon email et un mot de passe**,
 So that **je peux accéder à Septrion de manière sécurisée**.
 
 **Acceptance Criteria:**
 
 **Given** l'utilisateur est sur la page `/auth`
-**When** il saisit son numéro de téléphone et un mot de passe et clique "S'inscrire"
-**Then** un compte est créé dans Supabase Auth
+**When** il saisit son email et un mot de passe et clique "S'inscrire"
+**Then** un compte est créé dans Supabase Auth (email + password)
 **And** les tables `coproprietes` et `profiles` sont créées si elles n'existent pas (migration)
-**And** un profil est créé dans `profiles` avec le `whatsapp_phone` = numéro saisi
+**And** un profil est créé dans `profiles` avec l'email (le numéro WhatsApp sera collecté à l'onboarding)
 **And** l'utilisateur est redirigé vers l'onboarding
-**And** en cas d'erreur (numéro déjà utilisé, mdp trop court), un message explicite s'affiche
+**And** en cas d'erreur (email déjà utilisé, mdp trop court), un message explicite s'affiche
 
 ### Story 1.3: Connexion & persistance de session
 
 As a **utilisateur existant**,
-I want **me connecter avec mon numéro + mot de passe et rester connecté**,
+I want **me connecter avec mon email + mot de passe et rester connecté**,
 So that **je n'ai pas à me reconnecter à chaque visite**.
 
 **Acceptance Criteria:**
@@ -320,11 +331,10 @@ So that **je suis opérationnel rapidement**.
 
 **Given** l'utilisateur est à l'étape 2 du stepper
 **When** il remplit le formulaire fusionné
-**Then** les champs affichés sont : numéro de téléphone, mot de passe, email (optionnel), prénom, nom de copropriété, checkbox opt-in notifications
-**And** le formulaire est structuré visuellement en 2 blocs : "Votre compte" (numéro, mdp, email) puis "Votre profil" (prénom, copro, opt-in)
-**And** un compte Supabase Auth est créé
+**Then** les champs affichés sont : prénom, numéro WhatsApp (format international, +33), nom de copropriété, checkbox opt-in notifications
+**And** le formulaire collecte le profil (le compte email+mdp a déjà été créé sur `/auth`)
 **And** une entrée `coproprietes` est créée si elle n'existe pas
-**And** un `profiles` est créé avec `first_name`, `copro_id`, `whatsapp_phone`, `email`, `notification_consent`
+**And** le `profiles` est mis à jour avec `first_name`, `copro_id`, `whatsapp_phone`, `notification_consent`
 **And** PostHog identifie l'utilisateur : `posthog.identify(user.id)` + `posthog.group('copro', copro_name)`
 **And** en cas d'erreur, un message explicite s'affiche
 
@@ -813,3 +823,69 @@ So that **l'interaction se sent naturelle et pas robotique**.
 **And** en état idle : grand bouton micro central avec sous-texte explicatif
 **And** les success screens (après action) utilisent un overlay plein écran avec check vert + titre + CTA
 **And** les transitions entre états (idle → conversation → actions) sont fluides sans flash
+
+## Epic X: Composants Structurants
+
+Composants transversaux identifiés par le UX spec et l'architecture mais non couverts par les epics initiaux.
+
+### Story X.1: Bottom Navigation globale
+
+As a **utilisateur**,
+I want **naviguer entre les sections principales de l'app**,
+So that **j'accède à tout en un tap depuis n'importe quelle page**.
+
+**Acceptance Criteria:**
+
+**Given** l'utilisateur est connecté et a complété l'onboarding
+**When** il est sur n'importe quelle page protégée
+**Then** une bottom navigation persistante affiche 5 onglets : Dashboard (icône maison), Dossiers (icône dossier), "+" central (bouton primaire → `/signaler-incident`), Signalements (icône inbox + badge count), Assistant IA (icône micro/chat)
+**And** l'onglet actif est highlighté
+**And** le badge count des signalements "nouveau" se met à jour en temps réel
+**And** la bottom nav n'apparaît PAS sur `/auth` et `/onboarding`
+**And** les touch targets font minimum 44px
+
+### Story X.2: Page Settings
+
+As a **utilisateur**,
+I want **modifier mes préférences et consulter mon profil**,
+So that **je contrôle mes notifications et mes infos**.
+
+**Acceptance Criteria:**
+
+**Given** l'utilisateur est connecté
+**When** il accède à `/settings`
+**Then** son profil s'affiche en lecture seule (prénom, copropriété)
+**And** il peut modifier le nombre de lots (sélecteur +/−, update `profiles`)
+**And** il peut toggler les notifications (update `notification_consent`)
+**And** un lien vers la politique de confidentialité est visible
+**And** une mention IA est affichée
+**And** un bouton "Déconnexion" appelle `supabase.auth.signOut()` et redirige vers `/auth`
+
+### Story X.3: Auth guard conditionnel onboarding
+
+As a **système**,
+I want **rediriger vers l'onboarding si non complété**,
+So that **les nouveaux utilisateurs passent par la configuration avant d'accéder à l'app**.
+
+**Acceptance Criteria:**
+
+**Given** un utilisateur est authentifié
+**When** l'AuthGuard vérifie l'accès à une route protégée
+**Then** le système query `profiles.onboarding_completed`
+**And** si `false` ou `null` → redirect `/onboarding`
+**And** si `true` → render children (accès normal)
+**And** la colonne `onboarding_completed` (boolean, default false) existe dans `profiles` via migration
+
+### Story X.4: Migration 001 — tables core
+
+As a **développeur**,
+I want **créer les tables core dans les migrations SQL**,
+So that **le schéma DB est complet, versionné et déployable**.
+
+**Acceptance Criteria:**
+
+**Given** une instance Supabase vierge
+**When** les migrations sont exécutées en ordre
+**Then** les tables `dossiers`, `signalements`, `published_updates` sont créées avec le schéma complet défini dans l'architecture
+**And** RLS est activé sur les 3 tables
+**And** les migrations suivantes (004 copro_id, 006 RLS policies) s'appliquent correctement

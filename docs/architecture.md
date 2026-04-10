@@ -124,7 +124,7 @@ Full-stack web (PWA + serverless). Projet brownfield — fondation existante doc
 
 ### Authentification & Sécurité
 
-**Auth :** Supabase Auth — inscription/connexion par numéro de téléphone + mot de passe. Le numéro sert de clé de matching avec WhatsApp (`sender_phone` → `profiles.whatsapp_phone` → `copro_id`).
+**Auth :** Supabase Auth — inscription/connexion par email + mot de passe. Le numéro WhatsApp est collecté à l'onboarding (step profil) et sert de clé de matching (`sender_phone` → `profiles.whatsapp_phone` → `copro_id`).
 
 **RLS :** Isolation par copropriété. Chaque table métier porte un `copro_id`. Les policies RLS filtrent par la copropriété de l'utilisateur connecté via `auth.uid() → profiles.copro_id`.
 

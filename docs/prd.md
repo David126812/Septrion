@@ -133,7 +133,7 @@ Pas de seuils de performance arbitraires. Le principe directeur est : **bien fai
 
 **Job #1 :** Créer, consulter ou alimenter un dossier via l'interface ou WhatsApp, avec aide IA pour la saisie, l'analyse et le digest.
 
-- **Authentification** : inscription par numéro de téléphone + mot de passe. Le numéro lie le compte WhatsApp à l'app (matching `sender_phone`). Persistance des données garantie.
+- **Authentification** : inscription par email + mot de passe. Le numéro WhatsApp est collecté à l'onboarding pour lier le compte à l'app (matching `sender_phone`). Persistance des données garantie.
 - **Onboarding** : stepper 5 étapes — explication visuelle → inscription + profil fusionnés (numéro, mdp, email optionnel, prénom, copro, opt-in) → installation PWA → WhatsApp → premier document. Nombre de lots déplacé dans Settings.
 - **Ingestion WhatsApp** : agent avec analyse IA → signalement structuré (titre, urgence, localisation si détectée, résumé, prochaine action)
 - **Création in-app** : page "Signaler un incident" via bouton "+" — saisie manuelle OU upload fichier avec auto-complétion IA (au choix de l'utilisateur). Upload sans auto-complétion = simple pièce jointe.
@@ -211,6 +211,24 @@ Autre cas : le syndic ne répond plus depuis 2 semaines sur le dossier "Ravaleme
 - bloqué → en cours (problème débloqué)
 - terminé → en cours (sujet rouvert)
 
+### Parcours 5 — Ibtissem découvre Septrion (onboarding)
+
+**Ibtissem**, 28 ans, nouvelle secrétaire du CS d'une copro de 55 lots. David l'invite à tester Septrion.
+
+Ibtissem ouvre le lien sur son iPhone. L'écran d'accueil lui explique le principe en 3 étapes visuelles : "Vous recevez un document → Vous le forwardez → Il apparaît structuré". Elle tape "Suivant". L'app lui demande d'ajouter Septrion à son écran d'accueil (instructions iOS). Elle le fait.
+
+Écran suivant : inscription. Elle saisit son email, choisit un mot de passe. Écran suivant (onboarding step profil) : elle entre son prénom, son numéro WhatsApp, sélectionne sa copropriété dans la liste, coche l'opt-in notifications.
+
+L'app lui montre comment ajouter le contact WhatsApp Septrion et forwarder un document. Dernier écran : elle peut uploader un document, utiliser un exemple, ou explorer directement. Elle choisit l'exemple — un dossier seed apparaît sur son dashboard. L'onboarding est terminé en moins de 3 minutes.
+
+### Parcours 6 — Louise utilise l'assistant IA
+
+Louise a 12 dossiers dans Septrion. Un copropriétaire l'interpelle dans le hall : "Le ravalement, c'est quoi le dernier devis ?". Louise ouvre l'app, tape sur l'onglet Assistant IA. Trois suggestions apparaissent : "Résumé du dossier ravalement", "Dossiers bloqués", "Derniers signalements".
+
+Elle tape la suggestion "Résumé du dossier ravalement". L'assistant charge le contexte des dossiers de sa copro et répond : "Le dernier devis reçu est celui de l'Entreprise Martin, 45 000€ HT, reçu le 2 avril. Le dossier est en cours, prochaine action : comparaison avec le 2ème devis attendu." Sous la réponse, des boutons contextuels : "Voir le dossier", "Créer un signalement".
+
+Louise peut aussi utiliser la voix : elle appuie sur le micro, dit "Est-ce qu'on a des dossiers bloqués ?", et l'assistant transcrit sa question et répond avec la liste des dossiers bloqués et les raisons de blocage.
+
 ### Parcours post-MVP (noté pour la suite)
 
 - **Retrieval** — Louise retrouve une info en 10 secondes quand un voisin l'interpelle, copie le lien partageable et l'envoie dans le groupe WhatsApp de la copro. Le résident consulte le résumé sans app.
@@ -224,6 +242,8 @@ Autre cas : le syndic ne répond plus depuis 2 semaines sur le dossier "Ravaleme
 | 2 — Forward document | Ingestion WhatsApp + upload app, analyse IA (PDF), qualification, chronologie dossier |
 | 3 — Setup testeur | Ingestion manuelle, qualification, pré-chargement seed (dummy), déclenchement digest manuel |
 | 4 — Transition statut | Changement de statut dossier (en cours/bloqué/terminé), ajout de note contextuelle |
+| 5 — Onboarding | Stepper 5 étapes, inscription + profil fusionnés, installation PWA, WhatsApp, premier document |
+| 6 — Assistant IA | Chat texte, suggestions, actions contextuelles, transcription vocale, contexte dossiers |
 
 ## Exigences Domaine
 
@@ -275,7 +295,7 @@ Les risques domaine sont consolidés dans le tableau unique de la section "Risqu
 - **SPA React** (Vite + Tailwind + shadcn/ui) — navigation sans rechargement de page
 - **PWA installable** — manifest, service worker, icône écran d'accueil
 - **Mobile-first** — conçue pour l'usage smartphone, desktop secondaire
-- **Authentification** — Supabase Auth avec numéro de téléphone + mot de passe. Le numéro sert de clé de liaison avec le compte WhatsApp.
+- **Authentification** — Supabase Auth avec email + mot de passe. Le numéro WhatsApp est collecté à l'onboarding et sert de clé de liaison avec le compte WhatsApp.
 
 ### Navigateurs cibles
 
@@ -337,9 +357,9 @@ Le scope MVP est défini dans la section "Scope Produit" ci-dessus. Aucune featu
 
 ### Authentification
 
-- **FR1 :** Le nouvel utilisateur peut créer un compte avec son numéro de téléphone et un mot de passe
-- **FR2 :** Le système peut lier le numéro de téléphone au compte WhatsApp pour le matching des messages entrants
-- **FR3 :** Un utilisateur authentifié peut se connecter avec son numéro + mot de passe
+- **FR1 :** Le nouvel utilisateur peut créer un compte avec son email et un mot de passe
+- **FR2 :** Le système peut lier le numéro WhatsApp (collecté à l'onboarding) au compte pour le matching des messages entrants
+- **FR3 :** Un utilisateur authentifié peut se connecter avec son email + mot de passe
 - **FR4 :** Un utilisateur authentifié peut rester connecté entre les sessions (persistance de session)
 
 ### Onboarding
@@ -413,7 +433,7 @@ Le scope MVP est défini dans la section "Scope Produit" ci-dessus. Aucune featu
 ### Assistant IA
 
 - **FR45 :** Un membre CS peut poser une question à l'assistant IA par texte depuis l'app
-- **FR46 :** Un membre CS peut poser une question à l'assistant IA par la voix depuis l'app (transcription via Whisper)
+- **FR46 :** Un membre CS peut poser une question à l'assistant IA par la voix depuis l'app (transcription vocale en français)
 - **FR47 :** L'assistant IA peut charger le contexte des dossiers et signalements de la copropriété et fournir une réponse synthétique et contextualisée (résumé, statut, dernière action, responsable)
 - **FR48 :** L'assistant IA peut proposer des actions contextuelles suite à une question (consulter le dossier, créer un signalement)
 - **FR49 :** L'assistant IA peut afficher des suggestions de questions au lancement et des chips de suivi après chaque réponse

@@ -25,13 +25,13 @@ workflowType: 'retrospective'
 - Page privacy policy en place
 
 ### Ce qui a derive
-- **Auth par email au lieu de telephone** — La spec (PRD FR1, UX spec, epics story 1.2) dit unanimement "numero de telephone + mot de passe". L'implementation utilise email+password. C'est l'ecart le plus impactant car le numero est la cle de matching WhatsApp (`sender_phone` -> `profiles.whatsapp_phone`). Sans cette liaison, le flux WhatsApp -> app est casse pour les nouveaux utilisateurs.
+- **Auth par email au lieu de telephone** — L'implementation initiale utilisait email+password alors que les specs disaient telephone. **Decision (2026-04-10) : email + mdp est desormais la methode officielle.** Le numero WhatsApp est collecte a l'onboarding (step profil). Tous les docs ont ete mis a jour (PRD, architecture, epics, UX spec, project-context).
 - **Migration 001 manquante** — Les tables core (`dossiers`, `signalements`, `published_updates`) n'ont pas de `CREATE TABLE` dans les migrations. Les migrations 004 (ALTER TABLE ADD copro_id) et 006 (RLS policies) referencent des tables qui n'existent pas en base. Un `supabase db reset` echouerait.
 - **Variables d'environnement hardcodees** — `supabase.ts` contient un fallback avec l'URL et l'anon key en clair. Acceptable pour un prototype, problematique pour la production.
 
 ### Ajustements necessaires
 1. Creer migration `001_core_tables.sql` (BLOQUANT)
-2. Migrer Auth de email vers telephone ou documenter la decision si email est delibere
+2. ~~Migrer Auth de email vers telephone~~ — **Resolu (2026-04-10) : email + mdp confirme comme methode officielle**
 3. Supprimer les fallbacks hardcodes dans `supabase.ts`
 
 ---
