@@ -12,19 +12,13 @@ import DossiersList from '@/pages/DossiersList'
 import DossierDetail from '@/pages/DossierDetail'
 import Dashboard from '@/pages/Dashboard'
 import Settings from '@/pages/Settings'
+import AssistantIA from '@/pages/AssistantIA'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { staleTime: 1000 * 60, retry: 1 },
   },
 })
-
-// Placeholder pages — will be replaced in later epics
-const Placeholder = ({ name }: { name: string }) => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <p className="text-muted-foreground">{name} — à implémenter</p>
-  </div>
-)
 
 function App() {
   return (
@@ -41,7 +35,7 @@ function App() {
           <Route path="/dossiers/:id" element={<AuthGuard><DossierDetail /></AuthGuard>} />
           <Route path="/signalements" element={<AuthGuard><Signalements /></AuthGuard>} />
           <Route path="/signaler-incident" element={<AuthGuard><SignalerIncident /></AuthGuard>} />
-          <Route path="/assistant" element={<AuthGuard><Placeholder name="Assistant IA" /></AuthGuard>} />
+          <Route path="/assistant" element={<AuthGuard><AssistantIA /></AuthGuard>} />
           <Route path="/settings" element={<AuthGuard><Settings /></AuthGuard>} />
 
           <Route path="*" element={<Navigate to="/auth" replace />} />
