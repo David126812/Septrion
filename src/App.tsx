@@ -4,6 +4,7 @@ import { Toaster } from 'sonner'
 
 import AuthGuard from '@/components/auth/AuthGuard'
 import Auth from '@/pages/Auth'
+import Onboarding from '@/pages/Onboarding'
 import PrivacyPolicy from '@/pages/PrivacyPolicy'
 
 const queryClient = new QueryClient({
@@ -26,7 +27,7 @@ function App() {
         <Routes>
           <Route path="/auth" element={<Auth />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/onboarding" element={<Placeholder name="Onboarding" />} />
+          <Route path="/onboarding" element={<Onboarding />} />
 
           {/* Protected routes */}
           <Route path="/dashboard" element={<AuthGuard><Placeholder name="Dashboard" /></AuthGuard>} />
