@@ -71,11 +71,13 @@ const StepProfil = ({ onNext }: Props) => {
 
       // Create or find copropriete
       let coproId: string
+
+      // Check if copro already exists (maybeSingle avoids error on 0 results)
       const { data: existingCopro } = await supabase
         .from('coproprietes')
         .select('id')
         .eq('name', coproName)
-        .single()
+        .maybeSingle()
 
       if (existingCopro) {
         coproId = existingCopro.id
@@ -86,7 +88,8 @@ const StepProfil = ({ onNext }: Props) => {
           .select('id')
           .single()
         if (coproError || !newCopro) {
-          toast.error('Erreur lors de la création de la copropriété.')
+          console.error('Copro insert error:', coproError)
+          toast.error(`Erreur copropriété : ${coproError?.message || 'inconnue'}`)
           setLoading(false)
           return
         }
@@ -106,7 +109,8 @@ const StepProfil = ({ onNext }: Props) => {
         })
 
       if (profileError) {
-        toast.error('Erreur lors de la sauvegarde du profil.')
+        console.error('Profile upsert error:', profileError)
+        toast.error(`Erreur profil : ${profileError.message}`)
         setLoading(false)
         return
       }
