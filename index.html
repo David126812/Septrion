@@ -111,10 +111,11 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://formspree.io">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Preload hero image for faster LCP -->
-  <link rel="preload" as="image" href="mockup-iphone.png">
+  <link rel="preload" as="image" href="mockup-iphone.png" fetchpriority="high">
 
   <style>
     /* ── Tokens ── */
@@ -1072,7 +1073,7 @@
             </p>
           </div>
           <div class="hero-mockup reveal reveal-delay-2" aria-label="Aperçu de l'application Septrion">
-            <img src="mockup-iphone.png" alt="Application Septrion sur iPhone" width="300" height="613" loading="eager">
+            <img src="mockup-iphone.png" alt="Application Septrion sur iPhone" width="300" height="613" loading="eager" fetchpriority="high">
           </div>
         </div>
       </div>
