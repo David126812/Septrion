@@ -1,19 +1,1345 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Septrion" />
-    <link rel="apple-touch-icon" href="/icon-192.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <title>Septrion</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Septrion — Votre copropriété, toujours à jour</title>
+  <meta name="description" content="Septrion aide les conseils syndicaux à centraliser, structurer et partager les informations importantes de leur copropriété. Fini les emails éparpillés et les documents introuvables.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.septrion.fr/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.septrion.fr/">
+  <meta property="og:title" content="Septrion — Votre copropriété, toujours à jour">
+  <meta property="og:description" content="Centralisez, structurez et partagez les informations de votre copropriété. L'outil pensé pour les conseils syndicaux.">
+  <meta property="og:image" content="https://www.septrion.fr/mockup-iphone.png">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Septrion">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Septrion — Votre copropriété, toujours à jour">
+  <meta name="twitter:description" content="Centralisez, structurez et partagez les informations de votre copropriété.">
+  <meta name="twitter:image" content="https://www.septrion.fr/mockup-iphone.png">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Septrion",
+    "url": "https://www.septrion.fr",
+    "description": "Septrion aide les conseils syndicaux à centraliser, structurer et partager les informations de leur copropriété.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR",
+      "description": "Bêta gratuite"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Septrion"
+    }
+  }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Tokens ── */
+    :root {
+      --bg: #fafbfd;
+      --surface: #ffffff;
+      --surface-raised: rgba(255,255,255,.72);
+      --text: #0c1d37;
+      --text-secondary: #4a5e7a;
+      --border: rgba(15,35,70,.08);
+      --border-hover: rgba(15,35,70,.14);
+      --accent: #2563eb;
+      --accent-light: #3b82f6;
+      --accent-glow: rgba(37,99,235,.12);
+      --green: #16a34a;
+      --green-glow: rgba(22,163,74,.10);
+      --radius: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --shadow-sm: 0 1px 3px rgba(15,35,70,.04), 0 4px 12px rgba(15,35,70,.03);
+      --shadow-md: 0 2px 8px rgba(15,35,70,.04), 0 12px 32px rgba(15,35,70,.06);
+      --shadow-lg: 0 4px 16px rgba(15,35,70,.04), 0 24px 56px rgba(15,35,70,.08);
+      --max: 1120px;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── Base ── */
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      letter-spacing: -0.011em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* ── Layout ── */
+    .container {
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 18px 40px;
+      border-radius: 14px;
+      font: inherit;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all .2s ease;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+    .btn:hover { transform: scale(1.02); opacity: .92; }
+    .btn:active { transform: scale(.98); }
+    .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,.3); }
+
+    .btn-primary {
+      background: linear-gradient(35deg, #1d4ed8 0%, #3b82f6 60%, #93c5fd 100%);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(29,78,216,.35);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 6px 24px rgba(29,78,216,.4);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border-color: rgba(15,35,70,.15);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-secondary:hover {
+      border-color: rgba(15,35,70,.25);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: rgba(255,255,255,.9);
+      border-color: rgba(255,255,255,.3);
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.5);
+    }
+
+    .btn-white {
+      background: #fff;
+      color: var(--accent);
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(0,0,0,.1);
+      border-color: transparent;
+    }
+    .btn-white:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,.15);
+    }
+
+    /* ── Highlight ── */
+    .hl { color: var(--accent); }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      background: var(--green-glow);
+      color: var(--green);
+      border: 1px solid rgba(22,163,74,.18);
+    }
+    .badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px rgba(22,163,74,.5);
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .4; transform: scale(.7); }
+    }
+
+    /* ── Top Banner ── */
+    .top-banner {
+      background: var(--accent);
+      color: #fff;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: .82rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .top-banner a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: .78rem;
+      transition: opacity .15s;
+    }
+    .top-banner a:hover { opacity: .85; }
+    .top-banner-close {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.7);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .top-banner-close:hover { color: #fff; }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(250,251,253,.82);
+      backdrop-filter: blur(16px) saturate(1.8);
+      -webkit-backdrop-filter: blur(16px) saturate(1.8);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      height: 60px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+    .brand-logo { width: 36px; height: auto; flex-shrink: 0; }
+    .nav-links {
+      display: none;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: .88rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color .15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .nav-cta .btn {
+      padding: 10px 20px;
+      font-size: .84rem;
+      border-radius: 12px;
+    }
+    .nav-cta .btn-secondary { display: none; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      padding: 56px 0 44px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .5;
+      animation: float 20s ease-in-out infinite;
+    }
+    .hero-bg .orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(37,99,235,.15) 0%, transparent 70%);
+      top: -180px; left: -100px;
+    }
+    .hero-bg .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(22,163,74,.1) 0%, transparent 70%);
+      bottom: -120px; right: -80px;
+      animation-delay: -7s;
+    }
+    .hero-bg .orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(139,92,246,.08) 0%, transparent 70%);
+      top: 40%; left: 50%;
+      animation-delay: -13s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(20px, -20px) scale(1.05); }
+      66% { transform: translate(-15px, 10px) scale(.97); }
+    }
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      text-align: left;
+    }
+    .hero-copy { max-width: 600px; }
+    .hero h1 {
+      font-size: clamp(2.2rem, 8vw, 4rem);
+      font-weight: 800;
+      line-height: .95;
+      letter-spacing: -0.04em;
+      margin: 12px 0 14px;
+      text-wrap: balance;
+    }
+    .hero .lead {
+      font-size: clamp(.92rem, 2.3vw, 1.1rem);
+      color: var(--text-secondary);
+      line-height: 1.55;
+      max-width: 48ch;
+      margin: 0 0 20px;
+      text-wrap: pretty;
+    }
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .hero-actions .btn {
+      width: 100%;
+      padding: 16px 40px;
+      font-size: .95rem;
+    }
+    .hero-actions .btn-secondary {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .hero-actions .btn-secondary:hover {
+      background: rgba(37,99,235,.04);
+    }
+    .hero-proof {
+      margin-top: 10px;
+      font-size: .82rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hero-proof svg {
+      color: var(--green);
+      flex: 0 0 auto;
+    }
+    .hero-mockup {
+      display: none;
+      justify-content: center;
+      position: relative;
+    }
+    .hero-mockup img {
+      width: min(400px, 100%);
+      filter: drop-shadow(0 20px 40px rgba(15,35,70,.12));
+      transition: transform .5s cubic-bezier(.16,1,.3,1);
+    }
+    .hero-mockup:hover img {
+      transform: translateY(-6px) scale(1.02);
+    }
+    .hero-mockup::after {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 40px;
+      background: radial-gradient(ellipse, rgba(15,35,70,.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* ── Section ── */
+    .section {
+      padding: 56px 0;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--accent);
+      background: var(--accent-glow);
+      margin-bottom: 12px;
+    }
+    .section-header {
+      margin-bottom: 36px;
+    }
+    .section-header h2 {
+      font-size: clamp(1.5rem, 5vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.035em;
+      margin-bottom: 10px;
+    }
+    .section-header p {
+      color: var(--text-secondary);
+      font-size: 1.02rem;
+      line-height: 1.4;
+      max-width: 54ch;
+    }
+    .section-header--center {
+      text-align: center;
+    }
+    .section-header--center p {
+      margin: 0 auto;
+    }
+
+    /* ── Pain Points ── */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .25s ease, border-color .25s ease;
+    }
+    .pain-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-hover);
+    }
+    .pain-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+    }
+    .pain-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    .pain-icon--red { background: #fef2f2; color: #ef4444; }
+    .pain-icon--orange { background: #fff7ed; color: #f97316; }
+    .pain-icon--purple { background: #f5f3ff; color: #8b5cf6; }
+    .pain-card h3 {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .pain-card p {
+      color: var(--text-secondary);
+      font-size: .9rem;
+      line-height: 1.55;
+    }
+
+    /* ── Pain Timeline ── */
+    .tl-wrap {
+      max-width: 620px;
+      margin: 0 auto;
+      position: relative;
+      padding-left: 52px;
+    }
+    .tl-wrap::before {
+      content: "";
+      position: absolute;
+      left: 17px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: rgba(15,35,70,.08);
+    }
+    .tl-item {
+      position: relative;
+      padding-bottom: 32px;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      position: absolute;
+      left: -52px;
+      top: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+    }
+    .tl-dot svg { width: 18px; height: 18px; }
+    .tl-dot--red { background: #fef2f2; color: #ef4444; border: 2px solid #fecaca; }
+    .tl-dot--orange { background: #fff7ed; color: #f97316; border: 2px solid #fed7aa; }
+    .tl-dot--purple { background: #f5f3ff; color: #8b5cf6; border: 2px solid #ddd6fe; }
+    .tl-time {
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 4px;
+      opacity: .6;
+    }
+    .tl-item h3 {
+      font-weight: 700;
+      font-size: .98rem;
+      margin-bottom: 4px;
+    }
+    .tl-item p {
+      color: var(--text-secondary);
+      font-size: .9rem;
+      line-height: 1.6;
+    }
+
+    /* ── Solutions ── */
+    .sol-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .sol-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .25s ease, border-color .25s ease, transform .25s ease;
+    }
+    .sol-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+    .sol-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 14px;
+    }
+    .sol-badge--blue { background: var(--accent-glow); color: var(--accent); }
+    .sol-badge--green { background: var(--green-glow); color: var(--green); }
+    .sol-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+    }
+    .sol-icon svg { width: 24px; height: 24px; }
+    .sol-icon--blue { background: var(--accent-glow); color: var(--accent); }
+    .sol-icon--green { background: var(--green-glow); color: var(--green); }
+    .sol-card h3 {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+    }
+    .sol-card p {
+      color: var(--text-secondary);
+      font-size: .9rem;
+      line-height: 1.6;
+    }
+
+    /* ── Beta CTA ── */
+    .beta-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 44px 32px;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+      box-shadow: var(--shadow-md);
+    }
+    .beta-box h2 {
+      font-size: clamp(1.3rem, 4vw, 1.75rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      margin-bottom: 8px;
+    }
+    .beta-box > p {
+      color: var(--text-secondary);
+      font-size: .92rem;
+      margin-bottom: 24px;
+      line-height: 1.55;
+    }
+    .beta-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 24px;
+    }
+    .beta-stat {
+      text-align: center;
+    }
+    .beta-stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--accent);
+    }
+    .beta-stat-label {
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    .beta-divider {
+      width: 1px;
+      background: var(--border);
+    }
+    .beta-box .btn { width: 100%; max-width: 320px; }
+    .beta-sub {
+      margin-top: 10px;
+      font-size: .78rem;
+      color: var(--text-secondary);
+      opacity: .6;
+    }
+
+    /* ── FAQ ── */
+    .faq-list {
+      display: grid;
+      gap: 8px;
+      max-width: 700px;
+    }
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: box-shadow .25s ease, border-color .25s ease;
+    }
+    .faq-item:hover {
+      border-color: var(--border-hover);
+    }
+    .faq-item[open] {
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+    }
+    .faq-item summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      font-weight: 600;
+      font-size: .94rem;
+      cursor: pointer;
+      list-style: none;
+      letter-spacing: -0.01em;
+      transition: color .15s;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: "+";
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background .15s, transform .25s;
+    }
+    .faq-item[open] summary::after {
+      content: "\2212";
+      background: var(--accent-glow);
+      color: var(--accent);
+      transform: rotate(180deg);
+    }
+    .faq-item[open] summary {
+      color: var(--accent);
+    }
+    .faq-answer {
+      padding: 0 20px 18px;
+      color: var(--text-secondary);
+      font-size: .9rem;
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0 36px;
+      margin-top: 16px;
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      text-align: center;
+      justify-items: center;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+    .footer-brand .brand-logo { width: 24px; }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .footer-links a {
+      color: var(--text-secondary);
+      font-size: .84rem;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy {
+      color: var(--text-secondary);
+      font-size: .8rem;
+    }
+
+    /* ── Modals ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+      background: rgba(15,23,42,.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .modal-overlay.is-open {
+      display: flex;
+      animation: fade-in .2s ease;
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-dialog {
+      width: min(100%, 460px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 28px;
+      position: relative;
+      animation: modal-in .3s cubic-bezier(.16,1,.3,1);
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: translateY(16px) scale(.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      font: inherit;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      display: grid;
+      place-items: center;
+      transition: all .15s;
+    }
+    .modal-close:hover {
+      background: var(--bg);
+      color: var(--text);
+    }
+    .modal-dialog h3 {
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .modal-dialog > p {
+      color: var(--text-secondary);
+      font-size: .9rem;
+      margin-bottom: 20px;
+    }
+    .modal-form {
+      display: grid;
+      gap: 14px;
+    }
+    .modal-field label {
+      display: block;
+      font-weight: 600;
+      font-size: .84rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .modal-field input {
+      width: 100%;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0 14px;
+      font: inherit;
+      font-size: .9rem;
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .modal-field input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .modal-form .btn { width: 100%; margin-top: 4px; }
+    .field-error {
+      display: none;
+      font-size: .8rem;
+      color: #ef4444;
+      margin-top: 4px;
+    }
+    .field-error.is-visible {
+      display: block;
+    }
+    .modal-note {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: .8rem;
+      margin-top: 10px;
+    }
+
+    /* ── Demo Modal ── */
+    .demo-dialog { width: min(100%, 360px); padding: 20px; }
+    .demo-header { margin-bottom: 8px; }
+    .demo-header h3 { font-size: 1.05rem; margin-bottom: 2px; }
+    .demo-header p { color: var(--text-secondary); font-size: .82rem; }
+    /* ── Responsive: Tablet (768px+) ── */
+    @media (min-width: 768px) {
+      .container { width: min(var(--max), calc(100% - 48px)); }
+
+      .nav-links { display: flex; }
+      .nav-cta .btn-secondary { display: inline-flex; }
+
+      .hero { padding: 72px 0 80px; }
+      .hero-grid {
+        grid-template-columns: 1.15fr .85fr;
+        text-align: left;
+        justify-items: start;
+        gap: 40px;
+        align-items: center;
+      }
+      .hero .lead { margin: 0 0 28px; }
+      .hero-actions { flex-direction: row; }
+      .hero-actions .btn { width: auto; padding: 16px 36px; }
+      .hero-proof { justify-content: start; }
+      .hero-mockup { display: flex; }
+      .hero-mockup img { width: min(400px, 100%); }
+
+      .section { padding: 72px 0; }
+      .pain-grid { grid-template-columns: repeat(3, 1fr); }
+      .sol-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .faq-list { margin: 0 auto; }
+
+      .footer-inner {
+        grid-template-columns: auto 1fr auto;
+        text-align: left;
+        justify-items: stretch;
+        align-items: center;
+      }
+      .footer-links { justify-content: center; }
+
+    }
+
+    /* ── Responsive: Desktop (1024px+) ── */
+    @media (min-width: 1024px) {
+      .hero h1 { font-size: clamp(3rem, 5vw, 4.4rem); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══ Top Banner ═══ -->
+  <div class="top-banner" id="topBanner">
+    <span>Phase bêta ouverte — accès gratuit, sans engagement</span>
+    <a href="#" onclick="openModal('contactModal'); return false;">Rejoindre gratuitement &rarr;</a>
+  </div>
+
+  <!-- ═══ Header ═══ -->
+  <header>
+    <div class="container nav">
+      <a href="#top" class="brand">
+        <svg class="brand-logo" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="blG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#863bff"/><stop offset="100%" stop-color="#47bfff"/></linearGradient>
+          </defs>
+          <path d="M14 114 L14 20 C14 16,16 14,20 14 L80 14 C84 14,86 16,86 20 L86 114" stroke="url(#blG)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <line x1="10" y1="114" x2="90" y2="114" stroke="url(#blG)" stroke-width="4.5" stroke-linecap="round"/>
+          <circle cx="50" cy="24" r="4" fill="#16a34a"/>
+          <rect x="26" y="34" width="13" height="10" rx="2.5" fill="#863bff"/>
+          <rect x="62" y="34" width="13" height="10" rx="2.5" fill="#a78bfa"/>
+          <rect x="26" y="50" width="13" height="10" rx="2.5" fill="#6e7bff"/>
+          <rect x="44" y="50" width="13" height="10" rx="2.5" fill="#6e7bff"/>
+          <rect x="44" y="66" width="13" height="10" rx="2.5" fill="#4e9bff"/>
+          <rect x="62" y="66" width="13" height="10" rx="2.5" fill="#47bfff"/>
+          <rect x="44" y="34" width="13" height="10" rx="2.5" stroke="url(#blG)" stroke-width="1.8" fill="none" opacity="0.25"/>
+          <rect x="62" y="50" width="13" height="10" rx="2.5" stroke="url(#blG)" stroke-width="1.8" fill="none" opacity="0.25"/>
+          <rect x="26" y="66" width="13" height="10" rx="2.5" stroke="url(#blG)" stroke-width="1.8" fill="none" opacity="0.25"/>
+          <rect x="23" y="88" width="17" height="5" rx="2.5" fill="#863bff" opacity="0.1" stroke="url(#blG)" stroke-width="2.5" stroke-opacity="0.5"/>
+          <rect x="60" y="88" width="17" height="5" rx="2.5" fill="#863bff" opacity="0.1" stroke="url(#blG)" stroke-width="2.5" stroke-opacity="0.5"/>
+          <rect x="42" y="85" width="16" height="14" rx="8" stroke="url(#blG)" stroke-width="2.5" fill="none" opacity="0.35"/>
+        </svg>
+        Septrion
+      </a>
+      <nav class="nav-links" aria-label="Navigation principale">
+        <a href="#probleme">Problème</a>
+        <a href="#solution">Solution</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-primary" href="#" onclick="openModal('contactModal'); return false;">Bêta-tester</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ═══ Hero ═══ -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-copy reveal">
+            <div class="badge">Pensé pour les conseils syndicaux</div>
+            <h1>Et si votre copro vous prenait <span class="hl">moins de temps</span>&nbsp;?</h1>
+            <p class="lead">Septrion centralise, structure et partage les informations de votre copropriété. Fini les emails éparpillés, les documents introuvables et les heures gaspillées.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#" onclick="openModal('contactModal'); return false;">Devenir bêta-testeur &rarr;</a>
+            </div>
+            <p class="hero-proof">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Phase de test gratuite — aucun engagement
+            </p>
+          </div>
+          <div class="hero-mockup reveal reveal-delay-2" aria-label="Aperçu de l'application Septrion">
+            <img src="mockup-iphone.png" alt="Application Septrion sur iPhone" width="300" height="613" loading="eager">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Le problème ═══ -->
+    <section class="section" id="probleme">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <span class="section-label">Le problème</span>
+          <h2>Un travail invisible qui prend un <span class="hl">temps fou</span></h2>
+          <p>Gérer une copropriété en tant que bénévole, c'est ça chaque semaine.</p>
+        </div>
+        <div class="tl-wrap reveal">
+          <div class="tl-item">
+            <div class="tl-dot tl-dot--red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></div>
+            <h3>Informations dispersées partout</h3>
+            <p>WhatsApp, mails, extranet du syndic, PDF... retrouver un document prend 30&nbsp;minutes.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot tl-dot--orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <h3>Des heures perdues chaque semaine</h3>
+            <p>Chercher un devis, reconstituer un historique, répondre aux questions des copropriétaires. Jusqu'à 10h par semaine.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot tl-dot--purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <h3>Une mémoire qui s'efface</h3>
+            <p>Quand un membre du conseil part, sa connaissance part avec lui. Les nouveaux repartent de zéro.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Solution ═══ -->
+    <section class="section" id="solution">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <span class="section-label">Solution</span>
+          <h2>Septrion <span class="hl">simplifie</span> tout ça</h2>
+          <p>Chaque fonctionnalité est conçue pour le quotidien d'un conseil syndical, pas pour un expert IT.</p>
+        </div>
+        <div class="sol-grid">
+          <div class="sol-card reveal">
+            <span class="sol-badge sol-badge--green">Ingestion</span>
+            <div class="sol-icon sol-icon--green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <h3>Ajoutez via WhatsApp ou l'app</h3>
+            <p>Transférez un document, une photo ou un message. 30&nbsp;secondes plus tard, c'est structuré dans votre espace.</p>
+          </div>
+          <div class="sol-card reveal reveal-delay-1">
+            <span class="sol-badge sol-badge--blue">Propulsé par l'IA</span>
+            <div class="sol-icon sol-icon--blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2m-9-11h2m18 0h2m-3.3-6.7-1.4 1.4M6.7 17.3l-1.4 1.4m0-13.4 1.4 1.4m10.6 10.6 1.4 1.4"/></svg></div>
+            <h3>Septrion analyse et classe</h3>
+            <p>Grâce à l'intelligence artificielle, titre, urgence, résumé et prochaine action sont extraits automatiquement. Septrion travaille, vous décidez.</p>
+          </div>
+          <div class="sol-card reveal reveal-delay-2">
+            <span class="sol-badge sol-badge--green">Centralisation</span>
+            <div class="sol-icon sol-icon--green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+            <h3>Tout au même endroit</h3>
+            <p>Un sujet = un dossier. Photos, devis, relances et historique réunis. Plus jamais 30 minutes pour un document.</p>
+          </div>
+          <div class="sol-card reveal reveal-delay-3">
+            <span class="sol-badge sol-badge--blue">Partage</span>
+            <div class="sol-icon sol-icon--blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></div>
+            <h3>Partagez en deux clics</h3>
+            <p>Résumé clair, prêt à diffuser aux copropriétaires par WhatsApp ou email. Récap hebdomadaire automatique.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Beta CTA ═══ -->
+    <section class="section">
+      <div class="container">
+        <div class="beta-box reveal">
+          <h2>Rejoignez les premiers <span class="hl">bêta-testeurs</span></h2>
+          <p>Testez Septrion gratuitement avec votre copropriété. Sans engagement, sans carte bancaire.</p>
+          <div class="beta-stats">
+            <div class="beta-stat">
+              <div class="beta-stat-num">15</div>
+              <div class="beta-stat-label">copropriétés inscrites</div>
+            </div>
+            <div class="beta-divider"></div>
+            <div class="beta-stat">
+              <div class="beta-stat-num">35</div>
+              <div class="beta-stat-label">places restantes</div>
+            </div>
+          </div>
+          <a class="btn btn-primary" href="#" onclick="openModal('contactModal'); return false;">Rejoindre la bêta &rarr;</a>
+          <p class="beta-sub">Inscription en 2 minutes · Aucun engagement</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FAQ ═══ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <span class="section-label">FAQ</span>
+          <h2>Questions <span class="hl">fréquentes</span></h2>
+        </div>
+        <div class="faq-list reveal">
+          <details class="faq-item">
+            <summary>À qui s'adresse Septrion&nbsp;?</summary>
+            <div class="faq-answer">Aux membres actifs des conseils syndicaux — présidents, trésoriers, secrétaires — qui veulent mieux organiser, centraliser et partager les informations de leur copropriété. Pas besoin d'être expert en informatique.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Quel problème Septrion résout&nbsp;?</summary>
+            <div class="faq-answer">Les informations de copropriété sont dispersées entre WhatsApp, les mails, l'extranet du syndic et des dizaines de PDF. Retrouver un document prend 30 minutes. Septrion centralise tout et structure automatiquement chaque information.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Comment fonctionne l'analyse automatique&nbsp;?</summary>
+            <div class="faq-answer">Quand vous transférez un document (PDF, photo, message), Septrion utilise l'intelligence artificielle pour extraire automatiquement le titre, le niveau d'urgence, un résumé et la prochaine action à mener. Vous validez en un clic. Septrion travaille, vous décidez.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Faut-il que tout le conseil s'inscrive&nbsp;?</summary>
+            <div class="faq-answer">Non. Une seule personne suffit pour commencer. Vous pouvez ensuite partager les résumés et dossiers avec les autres membres par WhatsApp ou email, directement depuis l'application.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Mes données sont-elles sécurisées&nbsp;?</summary>
+            <div class="faq-answer">Oui. Les données sont hébergées en Europe, protégées par chiffrement et conformes au RGPD. Aucune donnée n'est partagée avec des tiers. Vos documents restent les vôtres.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Est-ce payant&nbsp;?</summary>
+            <div class="faq-answer">Non. La phase actuelle est un test gratuit pour valider l'outil avec de vraies copropriétés. Aucun engagement, aucune carte bancaire demandée.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ Footer ═══ -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg class="brand-logo" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="flG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#863bff"/><stop offset="100%" stop-color="#47bfff"/></linearGradient>
+          </defs>
+          <path d="M14 114 L14 20 C14 16,16 14,20 14 L80 14 C84 14,86 16,86 20 L86 114" stroke="url(#flG)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <line x1="10" y1="114" x2="90" y2="114" stroke="url(#flG)" stroke-width="4.5" stroke-linecap="round"/>
+          <circle cx="50" cy="24" r="4" fill="#16a34a"/>
+          <rect x="26" y="34" width="13" height="10" rx="2.5" fill="#863bff"/>
+          <rect x="62" y="34" width="13" height="10" rx="2.5" fill="#a78bfa"/>
+          <rect x="26" y="50" width="13" height="10" rx="2.5" fill="#6e7bff"/>
+          <rect x="44" y="50" width="13" height="10" rx="2.5" fill="#6e7bff"/>
+          <rect x="44" y="66" width="13" height="10" rx="2.5" fill="#4e9bff"/>
+          <rect x="62" y="66" width="13" height="10" rx="2.5" fill="#47bfff"/>
+          <rect x="44" y="34" width="13" height="10" rx="2.5" stroke="url(#flG)" stroke-width="1.8" fill="none" opacity="0.25"/>
+          <rect x="62" y="50" width="13" height="10" rx="2.5" stroke="url(#flG)" stroke-width="1.8" fill="none" opacity="0.25"/>
+          <rect x="26" y="66" width="13" height="10" rx="2.5" stroke="url(#flG)" stroke-width="1.8" fill="none" opacity="0.25"/>
+          <rect x="23" y="88" width="17" height="5" rx="2.5" fill="#863bff" opacity="0.1" stroke="url(#flG)" stroke-width="2.5" stroke-opacity="0.5"/>
+          <rect x="60" y="88" width="17" height="5" rx="2.5" fill="#863bff" opacity="0.1" stroke="url(#flG)" stroke-width="2.5" stroke-opacity="0.5"/>
+          <rect x="42" y="85" width="16" height="14" rx="8" stroke="url(#flG)" stroke-width="2.5" fill="none" opacity="0.35"/>
+        </svg>
+        Septrion
+      </div>
+      <div class="footer-links">
+        <a href="#" onclick="openModal('contactModal'); return false;">Contact</a>
+        <a href="#">Mentions légales</a>
+        <a href="#">Politique de confidentialité</a>
+      </div>
+      <div class="footer-copy">&copy; Septrion 2025&ndash;2026</div>
+    </div>
+  </footer>
+
+  <!-- ═══ Contact Modal ═══ -->
+  <div class="modal-overlay" id="contactModal" aria-hidden="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+      <button class="modal-close" type="button" aria-label="Fermer" onclick="closeModal('contactModal')">&times;</button>
+      <!-- Form state -->
+      <div id="contactForm">
+        <h3 id="contactTitle">Rejoindre la bêta</h3>
+        <p>Laissez vos coordonnées. Nous vous recontactons pour organiser le test.</p>
+        <form class="modal-form" id="betaForm">
+          <div class="modal-field">
+            <label for="modal-nom">Nom</label>
+            <input id="modal-nom" name="nom" type="text" placeholder="Votre nom" required>
+          </div>
+          <div class="modal-field">
+            <label for="modal-email">Email</label>
+            <input id="modal-email" name="email" type="email" placeholder="vous@exemple.fr">
+            <span class="field-error" id="emailError"></span>
+          </div>
+          <div class="modal-field">
+            <label for="modal-telephone">Téléphone</label>
+            <input id="modal-telephone" name="telephone" type="tel" placeholder="06 00 00 00 00">
+            <span class="field-error" id="telError"></span>
+          </div>
+          <button class="btn btn-primary" type="submit" id="betaSubmit">Demander un accès</button>
+        </form>
+        <p class="modal-note">Phase de test — enquête non commerciale</p>
+      </div>
+      <!-- Success state -->
+      <div id="contactSuccess" style="display:none; text-align:center; padding:24px 0;">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--green-glow);display:grid;place-items:center;margin:0 auto 16px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3 style="margin-bottom:6px;">Demande envoyée</h3>
+        <p style="color:var(--text-secondary);font-size:.9rem;">Merci ! Nous vous recontactons très vite pour organiser votre test.</p>
+      </div>
+      <!-- Error state -->
+      <div id="contactError" style="display:none; text-align:center; padding:16px 0 0;">
+        <p style="color:#ef4444;font-size:.88rem;">Une erreur est survenue. Réessayez ou contactez-nous directement.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Demo Modal ═══ -->
+  <div class="modal-overlay" id="demoModal" aria-hidden="true">
+    <div class="modal-dialog demo-dialog" role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+      <button class="modal-close" type="button" aria-label="Fermer" onclick="closeModal('demoModal')">&times;</button>
+      <div class="demo-header">
+        <h3 id="demoTitle">Démo Septrion</h3>
+        <p>Découvrez l'application en action.</p>
+      </div>
+      <video id="demoVideo" controls playsinline preload="metadata" style="width:100%;border-radius:12px;background:#000;">
+        <source src="/demo.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <!-- ═══ Scripts ═══ -->
+  <script>
+    /* Scroll reveal — both directions */
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(function(el) {
+      observer.observe(el);
+    });
+
+    /* Modals */
+    function openModal(id) {
+      var m = document.getElementById(id);
+      m.classList.add('is-open');
+      m.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      var m = document.getElementById(id);
+      m.classList.remove('is-open');
+      m.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      var video = document.getElementById('demoVideo');
+      if (video) video.pause();
+    }
+
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('modal-overlay')) {
+        closeModal(e.target.id);
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.is-open').forEach(function(m) {
+          closeModal(m.id);
+        });
+      }
+    });
+
+    /* ── Beta form submission ── */
+    var FORMSPREE_ID = 'xojpgdyk';
+
+    document.getElementById('betaForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var emailVal = document.getElementById('modal-email').value.trim();
+      var telVal = document.getElementById('modal-telephone').value.trim();
+      var emailErr = document.getElementById('emailError');
+      var telErr = document.getElementById('telError');
+      var btn = document.getElementById('betaSubmit');
+      var errorEl = document.getElementById('contactError');
+      errorEl.style.display = 'none';
+      emailErr.classList.remove('is-visible');
+      telErr.classList.remove('is-visible');
+
+      var hasError = false;
+      if (!emailVal && !telVal) {
+        emailErr.textContent = 'Renseignez un email ou un numéro de téléphone';
+        emailErr.classList.add('is-visible');
+        hasError = true;
+      }
+      if (telVal && !/^(?:(?:\+33|0033)\s?[1-9]|0[1-9])(?:[\s.\-]?\d{2}){4}$/.test(telVal)) {
+        telErr.textContent = 'Numéro invalide (ex : 06 12 34 56 78)';
+        telErr.classList.add('is-visible');
+        hasError = true;
+      }
+      if (hasError) return;
+      btn.textContent = 'Envoi en cours…';
+      btn.disabled = true;
+
+      fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nom: document.getElementById('modal-nom').value,
+          email: document.getElementById('modal-email').value,
+          telephone: document.getElementById('modal-telephone').value
+        })
+      })
+      .then(function(res) {
+        if (res.ok) {
+          document.getElementById('contactForm').style.display = 'none';
+          document.getElementById('contactSuccess').style.display = 'block';
+        } else {
+          throw new Error('Erreur serveur');
+        }
+      })
+      .catch(function() {
+        errorEl.style.display = 'block';
+        btn.textContent = 'Demander un accès';
+        btn.disabled = false;
+      });
+    });
+
+  </script>
+
+  <!-- ═══ Vercel Web Analytics (activer dans Settings > Analytics) ═══ -->
+  <script defer src="/_vercel/insights/script.js"></script>
+
+</body>
 </html>
