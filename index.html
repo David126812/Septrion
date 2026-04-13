@@ -47,6 +47,64 @@
   }
   </script>
 
+  <!-- FAQ Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "À qui s'adresse Septrion ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Aux membres actifs des conseils syndicaux — présidents, trésoriers, secrétaires — qui veulent mieux organiser, centraliser et partager les informations de leur copropriété. Pas besoin d'être expert en informatique."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quel problème Septrion résout ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les informations de copropriété sont dispersées entre WhatsApp, les mails, l'extranet du syndic et des dizaines de PDF. Retrouver un document prend 30 minutes. Septrion centralise tout et structure automatiquement chaque information."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Comment fonctionne l'analyse automatique ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Quand vous transférez un document (PDF, photo, message), Septrion utilise l'intelligence artificielle pour extraire automatiquement le titre, le niveau d'urgence, un résumé et la prochaine action à mener. Vous validez en un clic."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Faut-il que tout le conseil s'inscrive ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Une seule personne suffit pour commencer. Vous pouvez ensuite partager les résumés et dossiers avec les autres membres par WhatsApp ou email, directement depuis l'application."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Mes données sont-elles sécurisées ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui. Les données sont hébergées en Europe, protégées par chiffrement et conformes au RGPD. Aucune donnée n'est partagée avec des tiers. Vos documents restent les vôtres."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Est-ce payant ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. La phase actuelle est un test gratuit pour valider l'outil avec de vraies copropriétés. Aucun engagement, aucune carte bancaire demandée."
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
@@ -54,6 +112,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Preload hero image for faster LCP -->
+  <link rel="preload" as="image" href="mockup-iphone.png">
 
   <style>
     /* ── Tokens ── */
@@ -1169,11 +1230,11 @@
         </svg>
         Septrion
       </div>
-      <div class="footer-links">
+      <nav class="footer-links" aria-label="Liens utiles">
         <a href="#" onclick="openModal('contactModal'); return false;">Contact</a>
         <a href="#">Mentions légales</a>
         <a href="#">Politique de confidentialité</a>
-      </div>
+      </nav>
       <div class="footer-copy">&copy; Septrion 2025&ndash;2026</div>
     </div>
   </footer>
