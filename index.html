@@ -1055,7 +1055,7 @@
   <!-- ═══ Top Banner ═══ -->
   <div class="top-banner" id="topBanner">
     <span>Phase bêta ouverte — accès gratuit, sans engagement</span>
-    <a href="#" onclick="va('event',{name:'cta_click',data:{location:'banner'}});openModal('contactModal'); return false;">Rejoindre gratuitement &rarr;</a>
+    <a href="#" onclick="va('event',{name:'cta_click',data:{location:'banner'}});posthog.capture('cta_click',{location:'banner'});openModal('contactModal'); return false;">Rejoindre gratuitement &rarr;</a>
   </div>
 
   <!-- ═══ Header ═══ -->
@@ -1090,7 +1090,7 @@
         <a href="#faq">FAQ</a>
       </nav>
       <div class="nav-cta">
-        <a class="btn btn-primary" href="#" onclick="va('event',{name:'cta_click',data:{location:'header'}});openModal('contactModal'); return false;">Bêta-tester</a>
+        <a class="btn btn-primary" href="#" onclick="va('event',{name:'cta_click',data:{location:'header'}});posthog.capture('cta_click',{location:'header'});openModal('contactModal'); return false;">Bêta-tester</a>
       </div>
     </div>
   </header>
@@ -1111,7 +1111,7 @@
             <h1>Et si votre copro vous prenait <span class="hl">moins de temps</span>&nbsp;?</h1>
             <p class="lead">Septrion centralise, structure et partage les informations de votre copropriété. Fini les emails éparpillés, les documents introuvables et les heures gaspillées.</p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#" onclick="va('event',{name:'cta_click',data:{location:'hero'}});openModal('contactModal'); return false;">Devenir bêta-testeur &rarr;</a>
+              <a class="btn btn-primary" href="#" onclick="va('event',{name:'cta_click',data:{location:'hero'}});posthog.capture('cta_click',{location:'hero'});openModal('contactModal'); return false;">Devenir bêta-testeur &rarr;</a>
             </div>
             <p class="hero-proof">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -1207,7 +1207,7 @@
               <div class="beta-stat-label">places restantes</div>
             </div>
           </div>
-          <a class="btn btn-primary" href="#" onclick="va('event',{name:'cta_click',data:{location:'beta_section'}});openModal('contactModal'); return false;">Rejoindre la bêta &rarr;</a>
+          <a class="btn btn-primary" href="#" onclick="va('event',{name:'cta_click',data:{location:'beta_section'}});posthog.capture('cta_click',{location:'beta_section'});openModal('contactModal'); return false;">Rejoindre la bêta &rarr;</a>
           <p class="beta-sub">Inscription en 2 minutes · Aucun engagement</p>
         </div>
       </div>
@@ -1278,7 +1278,7 @@
         Septrion
       </div>
       <nav class="footer-links" aria-label="Liens utiles">
-        <a href="#" onclick="va('event',{name:'cta_click',data:{location:'footer'}});openModal('contactModal'); return false;">Contact</a>
+        <a href="#" onclick="va('event',{name:'cta_click',data:{location:'footer'}});posthog.capture('cta_click',{location:'footer'});openModal('contactModal'); return false;">Contact</a>
         <a href="/mentions-legales.html">Mentions légales</a>
         <a href="/politique-de-confidentialite.html">Politique de confidentialité</a>
       </nav>
@@ -1435,6 +1435,7 @@
       .then(function(res) {
         if (res.ok) {
           va('event',{name:'form_submit',data:{status:'success'}});
+          posthog.capture('form_submit',{status:'success'});
           document.getElementById('contactForm').style.display = 'none';
           document.getElementById('contactSuccess').style.display = 'block';
         } else {
@@ -1452,6 +1453,12 @@
 
   <!-- ═══ Vercel Web Analytics (activer dans Settings > Analytics) ═══ -->
   <script defer src="/_vercel/insights/script.js"></script>
+
+  <!-- ═══ PostHog Analytics ═══ -->
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing identify alias people.set people.set_once set_config reset get_distinct_id getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onFeatureFlags onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_zeeqzakbymMDLvKPvkyPMoYYGpfHVkagi7om44we3H5a', {api_host: 'https://eu.i.posthog.com', person_profiles: 'identified_only'});
+  </script>
 
 </body>
 </html>
