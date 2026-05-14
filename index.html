@@ -1048,6 +1048,49 @@
     @media (min-width: 1024px) {
       .hero h1 { font-size: clamp(3rem, 5vw, 4.4rem); }
     }
+
+    /* ═════════ Pricing section ═════════ */
+    .pricing-section { padding: 72px 0; background: linear-gradient(180deg, var(--bg) 0%, #f1f5fa 100%); }
+    .trial-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--green-glow); color: var(--green); padding: 7px 14px; border-radius: 999px; font-size: .78rem; font-weight: 700; margin-bottom: 12px; border: 1px solid rgba(22,163,74,.18); }
+    .pricing-toggle-wrap { display: flex; justify-content: center; margin: 24px 0 12px; }
+    .pricing-toggle { display: inline-flex; background: rgba(15,35,70,.06); border-radius: 999px; padding: 4px; gap: 2px; }
+    .pricing-toggle button { background: transparent; border: 0; padding: 10px 22px; border-radius: 999px; font: inherit; font-size: .86rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); transition: all .2s; }
+    .pricing-toggle button.is-active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-sm); }
+    .pricing-toggle .discount { margin-left: 6px; color: var(--green); font-size: .72rem; font-weight: 700; }
+    .lots-slider { max-width: 680px; margin: 0 auto 28px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 22px 18px; }
+    .lots-slider-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; gap: 12px; flex-wrap: wrap; }
+    .lots-slider-head h4 { font-size: 1rem; font-weight: 700; letter-spacing: -.01em; }
+    .lots-slider-head .lots-value-wrap { display: inline-flex; align-items: baseline; gap: 8px; }
+    .lots-slider-head .lots-value { font-size: 1.3rem; font-weight: 800; color: var(--text); }
+    .lots-slider-head .lots-tier { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--accent); background: var(--accent-glow); padding: 4px 10px; border-radius: 999px; }
+    input.lots-range { width: 100%; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 999px; background: rgba(15,35,70,.1); background-image: linear-gradient(90deg, var(--accent), var(--accent)); background-repeat: no-repeat; background-size: 0% 100%; outline: none; cursor: pointer; transition: background-size .08s linear; }
+    input.lots-range::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(37,99,235,.18); cursor: pointer; transition: transform .15s; }
+    input.lots-range::-webkit-slider-thumb:hover { transform: scale(1.1); }
+    input.lots-range::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); border: 0; box-shadow: 0 0 0 4px rgba(37,99,235,.18); cursor: pointer; }
+    .lots-bounds { position: relative; height: 18px; font-size: .7rem; color: var(--text-secondary); margin-top: 6px; }
+    .lots-bounds span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+    .lots-helper { margin-top: 8px; text-align: center; font-size: .78rem; color: var(--text-secondary); }
+    .pricing-grid { display: grid; gap: 20px; grid-template-columns: 1fr; margin-top: 24px; max-width: 880px; margin-left: auto; margin-right: auto; }
+    @media (min-width: 768px) { .pricing-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; } }
+    .pricing-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; display: flex; flex-direction: column; box-shadow: var(--shadow-sm); transition: transform .2s, box-shadow .2s; }
+    .pricing-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .pricing-card--recommended { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow), var(--shadow-md); }
+    .pricing-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; padding: 6px 14px; border-radius: 999px; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+    .pricing-card h3 { font-size: 1.25rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 4px; }
+    .pricing-card .tagline { color: var(--text-secondary); font-size: .88rem; margin-bottom: 18px; }
+    .pricing-price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 6px; }
+    .pricing-price .amount { font-size: 2.4rem; font-weight: 800; letter-spacing: -.03em; }
+    .pricing-price .unit { color: var(--text-secondary); font-size: .92rem; }
+    .pricing-savings-block { margin-top: 10px; min-height: 1.4em; }
+    .pricing-savings-block .savings { display: inline-flex; align-items: center; background: var(--green-glow); color: var(--green); padding: 5px 12px; border-radius: 999px; font-size: .78rem; font-weight: 700; border: 1px solid rgba(22,163,74,.18); }
+    .pricing-period-note { font-size: .78rem; color: var(--text-secondary); margin-top: 4px; }
+    .pricing-audience { font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; color: var(--text-secondary); margin: 14px 0 18px; }
+    .pricing-features { list-style: none; padding: 0; margin: 0 0 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .pricing-features li { display: flex; gap: 10px; align-items: flex-start; font-size: .92rem; color: var(--text); }
+    .pricing-features svg { flex-shrink: 0; margin-top: 3px; color: var(--green); }
+    .pricing-cta { width: 100%; }
+    .pricing-note { text-align: center; margin-top: 28px; font-size: .85rem; color: var(--text-secondary); max-width: 54ch; margin-left: auto; margin-right: auto; }
+    .pricing-reassurance { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); font-size: .78rem; }
   </style>
 </head>
 
@@ -1088,6 +1131,7 @@
       <nav class="nav-links" aria-label="Navigation principale">
         <a href="#probleme">Problème</a>
         <a href="#solution">Solution</a>
+        <a href="#pricing">Tarifs</a>
         <a href="#faq">FAQ</a>
       </nav>
       <div class="nav-cta">
@@ -1211,6 +1255,96 @@
           <a class="btn btn-primary" href="#" onclick="va('event',{name:'cta_click',data:{location:'beta_section'}});posthog.capture('cta_click',{location:'beta_section'});openModal('contactModal'); return false;">Rejoindre la bêta &rarr;</a>
           <p class="beta-sub">Inscription en 2 minutes · Aucun engagement</p>
         </div>
+      </div>
+    </section>
+
+    <!-- ═══ Pricing ═══ -->
+    <section class="pricing-section" id="pricing">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <span class="trial-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            3 mois offerts pour tester
+          </span>
+          <span class="section-label">Tarifs</span>
+          <h2>Testez 3 mois. <span class="hl">Décidez ensuite.</span></h2>
+        </div>
+
+        <div class="pricing-toggle-wrap reveal">
+          <div class="pricing-toggle" role="tablist" aria-label="Choix du cycle de facturation">
+            <button type="button" data-billing="monthly" id="lpBillingMonthly">Mensuel</button>
+            <button type="button" class="is-active" data-billing="annual" id="lpBillingAnnual">Annuel<span class="discount">−1 €/lot</span></button>
+          </div>
+        </div>
+
+        <!-- Jauge de lots -->
+        <div class="lots-slider reveal">
+          <div class="lots-slider-head">
+            <h4>Taille de votre copropriété</h4>
+            <span class="lots-value-wrap">
+              <span class="lots-value" id="lpLotsValue">30</span>
+              <span style="color:var(--text-secondary);font-size:.92rem;">lots</span>
+              <span class="lots-tier" id="lpLotsTier">copro moyenne</span>
+            </span>
+          </div>
+          <input class="lots-range" type="range" min="5" max="200" step="1" value="30" id="lpLotsRange" aria-label="Nombre de lots de votre copropriété">
+          <div class="lots-bounds">
+            <span style="left:0%">5</span>
+            <span style="left:12.82%">30</span>
+            <span style="left:48.72%">100</span>
+            <span style="left:100%">200+</span>
+          </div>
+          <p class="lots-helper">Plus la copro est grande, plus le coût par lot est faible.</p>
+        </div>
+
+        <div class="pricing-grid reveal">
+          <article class="pricing-card" data-plan="essentiel">
+            <h3>Essentiel</h3>
+            <p class="tagline">L'essentiel pour qu'aucune information ne se perde.</p>
+            <div class="pricing-price"><span class="amount" id="lpPriceEssentiel">4</span><span class="unit">€ / lot / mois</span></div>
+            <div class="pricing-savings-block">
+              <span class="savings" id="lpSavingsEssentiel" style="display:none;"></span>
+            </div>
+            <p class="pricing-period-note" id="lpPeriodEssentiel">Engagement annuel · résiliable au renouvellement</p>
+            <p class="pricing-audience">Adapté à votre copropriété</p>
+            <ul class="pricing-features">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Signalements illimités</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Dossiers chronologiques</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Notifications WhatsApp / email</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Utilisateurs illimités</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Historique 12 mois</li>
+            </ul>
+            <a class="btn btn-outline pricing-cta" href="#" data-plan-cta="essentiel" onclick="va('event',{name:'pricing_cta',data:{plan:'essentiel'}});posthog.capture('pricing_plan_clicked',{surface:'lp',plan_id:'essentiel'});openModal('contactModal'); return false;">Démarrer 3 mois gratuits</a>
+          </article>
+
+          <article class="pricing-card pricing-card--recommended" data-plan="premium">
+            <span class="pricing-badge">★ Recommandé</span>
+            <h3>Premium</h3>
+            <p class="tagline">Toute la puissance de Septrion pour les conseils syndicaux.</p>
+            <div class="pricing-price"><span class="amount" id="lpPricePremium">6</span><span class="unit">€ / lot / mois</span></div>
+            <div class="pricing-savings-block">
+              <span class="savings" id="lpSavingsPremium" style="display:none;"></span>
+            </div>
+            <p class="pricing-period-note" id="lpPeriodPremium">Engagement annuel · résiliable au renouvellement</p>
+            <p class="pricing-audience">Adapté à votre copropriété</p>
+            <ul class="pricing-features">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Tout Essentiel, en illimité</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Assistant IA contextuel</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Résumés automatiques de dossiers</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Analyse devis / AG / factures</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Multi-bâtiments &amp; multi-CS</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Export comptable · support prioritaire</li>
+            </ul>
+            <a class="btn btn-primary pricing-cta" href="#" data-plan-cta="premium" onclick="va('event',{name:'pricing_cta',data:{plan:'premium'}});posthog.capture('pricing_plan_clicked',{surface:'lp',plan_id:'premium'});openModal('contactModal'); return false;">Démarrer 3 mois gratuits</a>
+          </article>
+        </div>
+
+        <p class="pricing-note reveal">
+          <span class="pricing-reassurance">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+            3 mois gratuits · Résiliable à tout moment · Hébergement en France · RGPD
+          </span>
+        </p>
       </div>
     </section>
 
@@ -1449,6 +1583,134 @@
         btn.disabled = false;
       });
     });
+
+    /* Pricing — jauge + toggle annuel/mensuel + tracking */
+    (function () {
+      var section = document.getElementById('pricing');
+      if (!section) return;
+
+      var btnMonthly = document.getElementById('lpBillingMonthly');
+      var btnAnnual = document.getElementById('lpBillingAnnual');
+      var range = document.getElementById('lpLotsRange');
+      var lotsValueEl = document.getElementById('lpLotsValue');
+      var lotsTierEl = document.getElementById('lpLotsTier');
+      var priceEss = document.getElementById('lpPriceEssentiel');
+      var pricePrem = document.getElementById('lpPricePremium');
+      var periodEss = document.getElementById('lpPeriodEssentiel');
+      var periodPrem = document.getElementById('lpPeriodPremium');
+      var savEssEl = document.getElementById('lpSavingsEssentiel');
+      var savPremEl = document.getElementById('lpSavingsPremium');
+
+      var current = 'annual';
+      var currentLots = parseInt(range.value, 10) || 30;
+
+      // Prix per-lot/mois. Ancres cohérentes avec les médianes Van Westendorp (n=17).
+      var ESS_MONTHLY_ANCHORS = [[5, 6], [30, 5], [100, 4], [200, 3]];
+
+      function tierLabel(lots) {
+        if (lots < 30) return 'petite copro';
+        if (lots < 100) return 'copro moyenne';
+        return 'grande copro';
+      }
+
+      function interpolate(lots, anchors) {
+        if (lots <= anchors[0][0]) return anchors[0][1];
+        var last = anchors[anchors.length - 1];
+        if (lots >= last[0]) return last[1];
+        for (var i = 1; i < anchors.length; i++) {
+          var l1 = anchors[i - 1][0], p1 = anchors[i - 1][1];
+          var l2 = anchors[i][0], p2 = anchors[i][1];
+          if (lots <= l2) {
+            return p1 + (lots - l1) / (l2 - l1) * (p2 - p1);
+          }
+        }
+        return last[1];
+      }
+
+      function priceFor(plan, lots, billing) {
+        var ess = interpolate(lots, ESS_MONTHLY_ANCHORS);
+        var raw;
+        if (plan === 'essentiel') raw = billing === 'annual' ? ess - 1 : ess;
+        else raw = billing === 'annual' ? ess + 1 : ess + 2;
+        return Math.round(raw * 100) / 100;
+      }
+
+      function formatPrice(v) {
+        if (v % 1 === 0) return String(v);
+        return v.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function updateRangeFill() {
+        var pct = ((currentLots - 5) / (200 - 5)) * 100;
+        range.style.backgroundSize = pct + '% 100%';
+      }
+
+      function refresh() {
+        lotsTierEl.textContent = tierLabel(currentLots);
+        var pEss = priceFor('essentiel', currentLots, current);
+        var pPrem = priceFor('premium', currentLots, current);
+        priceEss.textContent = formatPrice(pEss);
+        pricePrem.textContent = formatPrice(pPrem);
+        periodEss.textContent = current === 'annual' ? 'Engagement annuel · résiliable au renouvellement' : 'Sans engagement · résiliable à tout moment';
+        periodPrem.textContent = periodEss.textContent;
+
+        var baseEss = priceFor('essentiel', 5, current);
+        var basePrem = priceFor('premium', 5, current);
+        var savEss = Math.max(0, Math.round((1 - pEss / baseEss) * 100));
+        var savPrem = Math.max(0, Math.round((1 - pPrem / basePrem) * 100));
+        if (savEss > 0) {
+          savEssEl.style.display = 'inline-flex';
+          savEssEl.textContent = '−' + savEss + ' % par lot vs petite copro';
+        } else { savEssEl.style.display = 'none'; }
+        if (savPrem > 0) {
+          savPremEl.style.display = 'inline-flex';
+          savPremEl.textContent = '−' + savPrem + ' % par lot vs petite copro';
+        } else { savPremEl.style.display = 'none'; }
+      }
+
+      function setBilling(next) {
+        if (next === current) return;
+        current = next;
+        btnMonthly.classList.toggle('is-active', next === 'monthly');
+        btnAnnual.classList.toggle('is-active', next === 'annual');
+        refresh();
+        if (window.posthog) posthog.capture('pricing_billing_toggled', { surface: 'lp', billing: next });
+      }
+
+      btnMonthly.addEventListener('click', function () { setBilling('monthly'); });
+      btnAnnual.addEventListener('click', function () { setBilling('annual'); });
+
+      range.addEventListener('input', function () {
+        currentLots = parseInt(range.value, 10) || 5;
+        lotsValueEl.textContent = currentLots >= 200 ? '200+' : String(currentLots);
+        updateRangeFill();
+        refresh();
+      });
+
+      var lotsThrottle = null;
+      range.addEventListener('change', function () {
+        if (!window.posthog) return;
+        if (lotsThrottle) clearTimeout(lotsThrottle);
+        lotsThrottle = setTimeout(function () {
+          posthog.capture('pricing_lots_changed', { surface: 'lp', lots: currentLots, tier: tierLabel(currentLots) });
+        }, 300);
+      });
+
+      // Track la vue de la section (intersection)
+      var viewed = false;
+      var pObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting && !viewed) {
+            viewed = true;
+            if (window.posthog) posthog.capture('pricing_viewed', { surface: 'lp' });
+          }
+        });
+      }, { threshold: 0.3 });
+      pObs.observe(section);
+
+      updateRangeFill();
+      refresh();
+    })();
 
   </script>
 
